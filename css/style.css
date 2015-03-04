@@ -1,0 +1,243 @@
+/*
+# This file is part of Koha.
+#
+# Copyright (C) 2014  MartinKravec
+#
+# Koha is free software; you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# (at your option) any later version.
+#
+# Koha is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Koha; if not, see <http://www.gnu.org/licenses>.
+ */
+
+/* Move down content because we have a fixed navbar that is 50px tall */
+/*!
+ * Start Bootstrap - Modern Business HTML Template (http://startbootstrap.com)
+ * Code licensed under the Apache License v2.0.
+ * For details, see http://www.apache.org/licenses/LICENSE-2.0.
+ */
+
+/* Global Styles */
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    padding-top: 50px; /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+}
+
+.img-portfolio {
+    margin-bottom: 30px;
+}
+
+.img-hover:hover {
+    opacity: 0.8;
+}
+
+/* Home Page Carousel */
+
+header.carousel {
+    height: 50%;
+}
+
+header.carousel .item,
+header.carousel .item.active,
+header.carousel .carousel-inner {
+    height: 100%;
+}
+
+header.carousel .fill {
+    width: 100%;
+    height: 100%;
+    background-position: center;
+    background-size: cover;
+}
+
+/* 404 Page Styles */
+
+.error-404 {
+    font-size: 100px;
+}
+
+/* Pricing Page Styles */
+
+.price {
+    display: block;
+    font-size: 50px;
+    line-height: 50px;
+}
+
+.price sup {
+    top: -20px;
+    left: 2px;
+    font-size: 20px;
+}
+
+.period {
+    display: block;
+    font-style: italic;
+}
+
+/* Footer Styles */
+
+footer {
+    margin: 50px 0;
+}
+
+/* Responsive Styles */
+
+@media(max-width:991px) {
+    .customer-img,
+    .img-related {
+        margin-bottom: 30px;
+    }
+}
+
+@media(max-width:767px) {
+    .img-portfolio {
+        margin-bottom: 15px;
+    }
+
+    header.carousel .carousel {
+        height: 70%;
+    }
+}
+h4{
+	font-size: 200%;
+}
+.navbar-inverse {
+	background-color: #075cdd;
+	border-color: #ccc;
+}
+.navbar-inverse .navbar-nav>li>a {
+	color: #fff;
+	font-weight: bold;
+}
+.navbar-inverse .navbar-brand {
+	color: #fff;
+}
+.navbar-inverse .navbar-nav>li>a:hover {
+	color: #dddddd;
+        /*
+	-webkit-transform:scale(1.25); /* Safari and Chrome */
+  /*  -moz-transform:scale(1.25); /* Firefox */
+  /*  -ms-transform:scale(1.25); /* IE 9 */
+  /*  -o-transform:scale(1.25); /* Opera */
+  /*  transform:scale(1.25); */
+}
+.breadcrumb li.active {
+	color: #dd1d07;
+}
+a:hover{
+	color: #dd1d07;
+}
+.sign_in{
+	cursor: pointer;
+}
+.log_out{
+	cursor: pointer;
+}
+.box{
+    position: fixed;
+    right: 5px;
+    top: 100px;;
+    
+    display: block;
+    z-index: 2000;
+}
+#pdf_registered, #pdf_fined, #pdf_reservationed, #pdf_printed, #pdf_othered, #remove_registered, #remove_fined, #remove_reservationed, #remove_printed, #remove_othered, .pdf, .remove, #remove_virtualReservationed, #remove_virtualProlonged{
+    float: right;
+    margin-top: -18px;
+    margin-left: 10px;
+}
+#pdf_registered:hover, #pdf_fined:hover, #pdf_reservationed:hover, #pdf_printed:hover, #pdf_othered:hover, #remove_registered:hover, #remove_fined:hover, #remove_reservationed:hover, #remove_printed:hover, #remove_othered:hover, .pdf:hover, .remove:hover, #pdf_virtualReservationed:hover, #pdf_virtualProlonged:hover{
+    cursor: pointer;
+    text-decoration: none;
+    color: #dd1d07;
+}
+
+#pdf_monthly, #pdf_daily, #pdf_yearly{
+    float: right;
+    margin-top: -38px;
+}
+#pdf_monthly:hover, #pdf_daily:hover, #pdf_yearly:hover{
+    cursor: pointer;
+    text-decoration: none;
+    color: #dd1d07;
+}
+.pagination{
+    float: right;
+}
+#date_range{
+    float: right;
+}
+
+
+.newMessage{
+    background-color: #ffec8b;
+    color: #333;
+}
+.solvedMessage{
+    background-color: #5cb85c;
+    color: #333;
+}
+.unsolvedMessage{
+    background-color: #d9534f;
+    color: #333;
+    cursor: pointer;
+}
+.badgeInfo{
+    background-color: #83adee;
+    color: #333;
+}
+.well{
+    background-color: #83adee;
+}
+.rightButton{
+    float: right;
+}
+.expiredMessage{
+    background-color: #ff5555;
+    color: #333;
+}
+.notDelivered{
+    background-color: #ccff00;
+    color: #333;
+}
+.sendMessage{
+    color: #333; 
+    background-color: #ffec8b; 
+    font-weight: bold; 
+    border-color: #ddd;
+}
+
+.textcomplete-item, .dropdown-menu {
+    z-index: 9051;
+}
+.closeButton{
+    float: right;
+    cursor: pointer;
+    margin-top: -40px;
+}
+#deliveryReport{
+
+    display: block;
+
+}
+
+#loading-indicator {
+  position: fixed;
+  left:50%;
+    top:50%;
+    margin-left:-200px;
+    margin-top:-145px;
+}
