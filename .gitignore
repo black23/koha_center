@@ -1,2 +1,2 @@
-/log/*.log
-/system/systemConfig.php
+log/*.log
+system/systemConfig.php
