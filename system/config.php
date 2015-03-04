@@ -22,6 +22,8 @@
     }
     
     require __DIR__ . "/tracy/src/tracy.php";
+    
+    require __DIR__ . "/systemConfig.php";
     use Tracy\Debugger;
 
     /*************************************************************************/
@@ -30,19 +32,6 @@
     
         /* Select language. Set it also in login.php */
         $langShortcut = "cs"; // "cs" | "en"
-    
-        /* Set database connection */
-        $host = "localhost";
-        $user = "username";
-        $password = "password_to_database";
-        $database = "database_name";
-    
-        /* Set catalogue path */
-        $catalogue = "http://subdomain.domain.tld".":".$_SERVER['SERVER_PORT'];
-        
-        /* SMS Gate */
-        $SMS_username = "sms_username";
-        $SMS_password = "sms_password";
         
         /* Display errors */
         displayErrors(false);
