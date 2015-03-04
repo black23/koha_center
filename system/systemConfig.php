@@ -12,3 +12,4 @@
     /* SMS Gate */
     $SMS_username = "sms_username";
     $SMS_password = "sms_password";
+    
