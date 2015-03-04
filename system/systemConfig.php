@@ -1,4 +1,8 @@
 <?php
+/**
+ * This is system config file.
+ * Preferences configuration can be found in config.php
+ */
 
     /* Set database connection */
     $host = "localhost";
