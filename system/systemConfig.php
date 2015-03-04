@@ -2,6 +2,7 @@
 /**
  * This is system config file.
  * Preferences configuration can be found in config.php
+ * This file will be git ignored.
  */
 
     /* Set database connection */
