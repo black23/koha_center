@@ -130,7 +130,7 @@
                     </div>
                     <div class="panel-body">
                         <p>
-                            
+                            <a href="reports/statistical-report.php" title="<?php echo $text->statistical_reports; ?>"><?php echo $text->statistical_reports; ?></a><br>
                         </p>
                     </div>
                 </div>
