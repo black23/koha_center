@@ -133,5 +133,7 @@
     "status_unsolved": "Nevyřešeno",
     "solver": "Řešitel",
     "wannaSolveThisMessage": "Chcete označit tuto zprávu jako 'vyřešenou'?",
-    "detail": "Detail"
+    "detail": "Detail",
+    "choose_range": "Zvolte rozmezí",
+    "description": "Popis"
 }

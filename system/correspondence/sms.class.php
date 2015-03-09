@@ -1,5 +1,9 @@
 <?php
 
+    if (!headers_sent()) {
+            header('Content-Type: text/html; charset=utf-8');
+    }
+
 require_once(__DIR__.'/../smsconnect/connect.php');
 
 use Tracy\Debugger;

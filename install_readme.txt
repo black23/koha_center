@@ -19,3 +19,7 @@ CREATE TABLE `cen_smshistory` (
   `sender_id` tinyint NULL,
   `solver_id` int NULL
 ) COMMENT='' ENGINE='InnoDB' COLLATE 'utf8_unicode_ci';
+
+ALTER TABLE `cen_smshistory`
+ADD UNIQUE `sms_id` (`sms_id`),
+ADD INDEX `phone` (`phone`);

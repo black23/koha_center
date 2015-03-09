@@ -133,5 +133,7 @@
     "status_unsolved": "Unsolved",
     "solver": "Solver",
     "wannaSolveThisMessage": "Do you want to mark this message as 'solved'?",
-    "detail": "Detail"
+    "detail": "Detail",
+    "choose_range": "Choose range",
+    "description": "Description"
 }

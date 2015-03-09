@@ -34,7 +34,7 @@
         $langShortcut = "cs"; // "cs" | "en"
         
         /* Display errors */
-        displayErrors(false);
+        displayErrors(true);
         //displayErrors(false);
         
         /* Categories */

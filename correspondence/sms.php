@@ -33,7 +33,7 @@
     <head>
 
         <?php 
-            $title = $title = $text->KOHA." ".$title = $text->statistical_center;;
+            $title = $title = $text->KOHA." ".$title = $text->statistical_center;
             require_once "../tpl/head.php"; 
             
             require_once "../system/correspondence/sms.class.php"; 
@@ -509,6 +509,9 @@
                 
                 $("#sendFormClose").on("click", function(){
                     $("#sendForm").slideUp();
+                    $("#message").val("");
+                    $("#receivers").val("");
+                    $("#time").val("");
                 });
             
             $('.receivers').atwho({
@@ -626,6 +629,10 @@
                                 console.log("SMS sent successfully");
                                 alert("<?= $text->sms_sent_successfully ?>");
                                 $("#sendForm").slideUp();
+                                $("#sendForm").slideUp();
+                                $("#message").val("");
+                                $("#receivers").val("");
+                                $("#time").val("");
                             }
 
                         }).fail(function(jqXHR, textStatus){
@@ -639,7 +646,7 @@
             
             
             
-            var template_default = "Dobry den, knihovna  C. Trebova 732 756 82";
+            var template_default = "Dobry den, knihovna  C. Trebova 732 756 827";
 
             var template_left = "Dobry den, v pujcovne jste zapomnel(a)  ZZZ. Knihovna C. Trebova 732 756 827";
 
@@ -916,7 +923,7 @@
                     });
 
                     results.length = 0;
-                    alert(window.outgoingCount);
+                    //alert(window.outgoingCount);
                     printPagination("outgoing_pagination", window.outgoingCount, "changeOutgoingPage", goToPage);
 
                 }).fail(function(jqXHR, textStatus){
@@ -968,7 +975,7 @@
                     });
 
                     results.length = 0;
-                    alert(window.incomingCount);
+                    //alert(window.incomingCount);
                     printPagination("incoming_pagination", window.incomingCount, "changeIncomingPage", goToPage);
 
                 }).fail(function(jqXHR, textStatus){

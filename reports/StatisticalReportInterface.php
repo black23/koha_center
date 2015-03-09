@@ -38,6 +38,9 @@ interface StatisticalReportInterface
      */
     public function getReportAsArray();
     
+    /**
+     * @return  void
+     */
     public function getArray0101();
     public function getArray0102();
     public function getArray0103();
@@ -61,8 +64,6 @@ interface StatisticalReportInterface
     
     public function getArray0201();
     public function getArray0202();
-    public function getArray0203();
-    public function getArray0204();
     public function getArray0205();
 
     public function getArray0301();
@@ -82,6 +83,7 @@ interface StatisticalReportInterface
     public function getArray0315();
     public function getArray0316();
     public function getArray0317();
+    public function getArray0339();
     
     public function getArray0402();
     public function getArray0403();
