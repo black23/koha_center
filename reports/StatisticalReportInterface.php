@@ -57,7 +57,6 @@ interface StatisticalReportInterface
     public function getArray0114();
     public function getArray0115();
     public function getArray0116();
-    public function getArray0117();
     public function getArray0118();
     public function getArray0119();
     public function getArray0139();

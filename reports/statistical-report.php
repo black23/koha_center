@@ -264,12 +264,6 @@
                         </tr>
                         <tr class='st_report_part_1'>
                             <td></td>
-                            <td>0117</td>
-                            <td><?= $report_text->st_report_item_0117 ?></td>
-                            <td><i class='fa fa-clipboard copy'></i><span id="0117"></span></td>
-                        </tr>
-                        <tr class='st_report_part_1'>
-                            <td></td>
                             <td>0118</td>
                             <td><?= $report_text->st_report_item_0118 ?></td>
                             <td><i class='fa fa-clipboard copy'></i><span id="0118"></span></td>
@@ -529,8 +523,16 @@
 
     <!-- Bootstrap Core JavaScript -->
     <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/bootstrap-tooltip.js"></script>
     
     <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+    
+    <div class="tooltip top ctrlc" role="tooltip">
+        <div class="tooltip-arrow"></div>
+        <div class="tooltip-inner">
+            CTRL+C
+        </div>
+    </div>
     
     <?php
         if (isset($langShortcut) AND ($langShortcut == "cs")) {
@@ -564,10 +566,15 @@
             $( "#from" ).datepicker('setDate', "<?php echo $defaultFrom; ?>");
             $( "#to" ).datepicker('setDate', "<?php echo $defaultTo; ?>");
             
+            
+            
             $(".copy").on("click", function(event){
+                
                 event.preventDefault;
-                var value = $(this).next().text();
-                event.clipboardData.setData('text/plain', value);
+                var textElement = $(this).next();
+                $(textElement).selectText();
+                
+                $(".ctrlc").tooltip();
             });
             
             $(".generateReport").on("click", function(event){
@@ -607,6 +614,24 @@
             });
                 
         });
+        
+        jQuery.fn.selectText = function(){
+            var doc = document
+                , element = this[0]
+                , range, selection
+            ;
+            if (doc.body.createTextRange) {
+                range = document.body.createTextRange();
+                range.moveToElementText(element);
+                range.select();
+            } else if (window.getSelection) {
+                selection = window.getSelection();        
+                range = document.createRange();
+                range.selectNodeContents(element);
+                selection.removeAllRanges();
+                selection.addRange(range);
+            }
+        };
         
         /**
          *  Money Format
