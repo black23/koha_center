@@ -25,6 +25,8 @@
 	require_once "../system/config.php";
         
         use Tracy\Debugger;
+        //displayErrors(true);
+
 	
 ?>
 <!DOCTYPE html>
@@ -33,7 +35,7 @@
     <head>
 
         <?php 
-            $title = $title = $text->KOHA." ".$title = $text->statistical_center;
+            $title = $text->KOHA." ".$text->statistical_center;
             require_once "../tpl/head.php"; 
             
             require_once "../system/correspondence/sms.class.php"; 

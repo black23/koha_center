@@ -28,8 +28,6 @@
 	$type = "payment";
 	
 	try {
-		
-		$db->beginTransaction();	
 			
         $query = "SELECT round(Sum(ABS(`s`.`value`)),0) as `value`, `a`.`accounttype` "
 				."FROM `statistics` `s` "
@@ -37,9 +35,9 @@
 				."ON `a`.`accountlines_id` = `s`.`other` "
                 ."LEFT OUTER JOIN `branches` `b` "
                 ."ON `s`.`branch` = `b`.`branchcode` "
-                ."LEFT OUTER JOIN `accounttypes` `t` "
-                ."ON `t`.`code` = `a`.`accounttype` "
-				."WHERE `s`.`branch` = :department AND DATE(`s`.`datetime`) = :date AND `s`.`type` = :type "
+                //."LEFT OUTER JOIN `accounttypes` `t` "
+                //."ON `t`.`code` = `a`.`accounttype` "
+		."WHERE `s`.`branch` = :department AND DATE(`s`.`datetime`) = :date AND `s`.`type` = :type "
                 ."GROUP BY `s`.`branch`, `a`.`accounttype`";		
         
 		$stmt = $db->prepare($query);
@@ -49,8 +47,6 @@
 		$stmt->execute();
 
 		$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-	 
-		$db->commit();
 		
 	} catch(PDOException $ex) {
 		

@@ -114,7 +114,8 @@
                             'rent',
                             'rental',
                             'Rent',
-							'M',
+                            'M',
+                            'FFOR',
             );
         
         $cat_allPayments = array_merge($cat_registrations, $cat_fines, $cat_reservations, $cat_prints, $cat_other);
@@ -136,6 +137,64 @@
                 'Říj',
                 'Lis',
                 'Pro'";
+        
+        $categoryCode = "K"; // DB table categories->categorycode of library for detecting MVS in statistical reports
+        
+        /* Definition of foreign artefact types in KOHA */
+        $doc_types["handwriting"] = "RU";
+        $doc_types["micrographicDocument"] = "MD";
+        $doc_types["cartographicDocument"] = "MP";
+        $doc_types["printedMusic"] = "HU";
+        $doc_types["audioDocument"] = "AU";
+        $doc_types["audioPictorialDocument"] = "AV";
+        $doc_types["pictorialDocument"] = "OB";
+        $doc_types["electronicDocument"] = "ED";
+        $doc_types["periodics"] = "PE";
+        $doc_types["books"] = "KN";
+        $doc_types["MVS"] = "MVS";
+        
+        $ccodes["educational_adult_literature"] = "5";
+        $ccodes["educational_children_literature"] = "7";
+        $ccodes["beletry_adult_literature"] = "6";
+        $ccodes["beletry_children_literature"] = "8";
+        $ccodes["fiction_literature"] = "FIC";
+        $ccodes["non_fiction_literature"] = "NFIC";
+        $ccodes["reference"] = "REF";
+        
+        $niceLiterature = array(
+            $ccodes["beletry_adult_literature"],
+            $ccodes["beletry_children_literature"],
+            $ccodes["fiction_literature"],
+            $ccodes["non_fiction_literature"],
+        );
+        
+        $niceLiteratureForAdults = array(
+            $ccodes["beletry_adult_literature"],
+            $ccodes["fiction_literature"],
+            $ccodes["non_fiction_literature"],
+        );
+        
+        $niceLiteratureForChildren = array(
+            $ccodes["beletry_children_literature"],
+            $ccodes["fiction_literature"],
+            $ccodes["non_fiction_literature"],
+        );
+        
+        $educationalLiterature = array(
+            $ccodes["educational_adult_literature"],
+            $ccodes["educational_children_literature"],
+        );
+        
+        $educationalLiteratureForAdults = array(
+            $ccodes["educational_adult_literature"],
+        );
+        
+        $educationalLiteratureForChildren = array(
+            $ccodes["educational_children_literature"],
+        );
+        
+        
+        
     
     /*************************************************************************/
     /********************** User configuration part END **********************/
@@ -167,7 +226,12 @@
         
         
         
-     
+     $ccodes["array"]["niceLiterature"] = $niceLiterature;
+    $ccodes["array"]["niceLiteratureForAdults"] = $niceLiteratureForAdults;
+    $ccodes["array"]["niceLiteratureForChildren"] = $niceLiteratureForChildren;
+    $ccodes["array"]["educationalLiterature"] = $educationalLiterature;
+    $ccodes["array"]["educationalLiteratureForAdults"] = $educationalLiteratureForAdults;
+    $ccodes["array"]["educationalLiteratureForChildren"] = $educationalLiteratureForChildren;
         
     /* Login */
     
@@ -263,3 +327,7 @@ JSCODE;
         return str_replace($search, $replace, $subject);
         
     }
+    
+    /* PHPExcel */
+    date_default_timezone_set('Europe/Prague');
+    define('EOL', (PHP_SAPI == 'cli') ? PHP_EOL : '<br />');

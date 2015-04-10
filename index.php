@@ -93,6 +93,7 @@
                             <a href="visits/daily-visits.php" title="<?php echo $text->daily_visits; ?>"><?php echo $text->daily_visits; ?></a><br>
                             <a href="visits/monthly-visits-by-department.php" title="<?php echo $text->monthly_visits; ?>"><?php echo $text->monthly_visits; ?></a><br>
                             <a href="visits/yearly-visits-by-department.php" title="<?php echo $text->yearly_visits; ?>"><?php echo $text->yearly_visits; ?></a><br>
+                            <a href="visits/add_daily_visits.php" title="<?php echo $text->add_daily_visits; ?>"><?php echo $text->add_daily_visits; ?></a><br>
                         </p>
                     </div>
                 </div>
@@ -116,21 +117,24 @@
             <div class="col-md-4">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h4><i class="fa fa-lg fa-users"></i> <?php echo $text->circulations; ?></h4>
+                        <h4><i class="fa fa-lg fa-refresh"></i> <?php echo $text->circulations; ?></h4>
                     </div>
                     <div class="panel-body">
-                        <p></p>
+                        <p>
+                            <a href="news/news.php" title="<?php echo $text->news_in_pdf; ?>"><?php echo $text->news_in_pdf; ?></a><br>
+                        </p>
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h4><i class="fa fa-lg fa-book"></i> <?php echo $text->statistical_reports; ?></h4>
+                        <h4><i class="fa fa-lg fa-bar-chart"></i> <?php echo $text->statistical_reports; ?></h4>
                     </div>
                     <div class="panel-body">
                         <p>
-                            <a href="reports/statistical-report.php" title="<?php echo $text->statistical_reports; ?>"><?php echo $text->statistical_reports; ?></a><br>
+                            <a href="reports/statistical-report.php" title="<?php echo $text->yearly_report; ?>"><?php echo $text->yearly_report; ?></a><br>
+                            <a href="reports/daily-report.php" title="<?php echo $text->daily_report; ?>"><?php echo $text->daily_report; ?></a><br>
                         </p>
                     </div>
                 </div>

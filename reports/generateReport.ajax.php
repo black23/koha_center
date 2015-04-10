@@ -11,10 +11,12 @@
     
     use Tracy\Debugger;
     
+    //displayErrors(true);
+    
     $from = $_POST["from"];
     $to = $_POST["to"];
     
-    $StatisticalReport = new StatisticalReport($db, $from, $to);
+    $StatisticalReport = new StatisticalReport($db, $from, $to, $categoryCode, $doc_types, $ccodes, $cat_prints);
         
     $results = $StatisticalReport->getReportAsArray();
     

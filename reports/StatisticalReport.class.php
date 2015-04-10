@@ -19,21 +19,21 @@ class StatisticalReport implements StatisticalReportInterface
      *
      * @var object
      */
-    private $db;
+    protected $db;
     
     /**
      * Contains datetime from
      *
      * @var string
      */
-    private $from;
+    protected $from;
     
     /**
      * Contains datetime to
      *
      * @var string
      */
-    private $to;
+    protected $to;
     
     /**
      * Contains results of SQL queries
@@ -43,83 +43,37 @@ class StatisticalReport implements StatisticalReportInterface
     protected $report;
     
     /**
+     * Array of document types
+     *
+     * @var array
+     */
+    protected $docTypes;
+    
+    /**
+     * Array of literature types
+     *
+     * @var array
+     */
+    protected $ccodes;
+    
+    protected $catPrints;
+    
+    /**
      * Constructor for initializing the class.
      *
      * @param $db
      * @return void
      */
-    public function __construct(PDO $db, $from, $to)
+    public function __construct(PDO $db, $from, $to, $categoryCode, array $docTypes, array $ccodes, $catPrints)
     {
         $this->db = $db;
         $this->from = $from;
         $this->to = $to;
         $this->report = array();
-        
-        /**
-        * Delete this code below
-        */
-        $this->report["0101"] = 0;
-        $this->report["0102"] = 0;
-        $this->report["0103"] = 0;
-        $this->report["0104"] = 0;
-        $this->report["0105"] = 0;
-        $this->report["0106"] = 0;
-        $this->report["0107"] = 0;
-        $this->report["0108"] = 0;
-        $this->report["0109"] = 0;
-        $this->report["0110"] = 0;
-        $this->report["0111"] = 0;
-        $this->report["0112"] = 0;
-        $this->report["0113"] = 0;
-        $this->report["0114"] = 0;
-        $this->report["0115"] = 0;
-        $this->report["0116"] = 0;
-        $this->report["0117"] = 0;
-        $this->report["0118"] = 0;
-        $this->report["0119"] = 0;
-        
-        $this->report["0201"] = 0;
-        $this->report["0202"] = 0;
-        $this->report["0203"] = 0;
-        $this->report["0204"] = 0;
-        $this->report["0205"] = 0;
-        
-        $this->report["0301"] = 0;
-        $this->report["0302"] = 0;
-        $this->report["0303"] = 0;
-        $this->report["0304"] = 0;
-        $this->report["0305"] = 0;
-        $this->report["0306"] = 0;
-        $this->report["0307"] = 0;
-        $this->report["0308"] = 0;
-        $this->report["0309"] = 0;
-        $this->report["0310"] = 0;
-        $this->report["0311"] = 0;
-        $this->report["0312"] = 0;
-        $this->report["0313"] = 0;
-        $this->report["0314"] = 0;
-        $this->report["0315"] = 0;
-        $this->report["0316"] = 0;
-        $this->report["0317"] = 0;
-        $this->report["0339"] = 0;
-        
-        $this->report["0402"] = 0;
-        $this->report["0403"] = 0;
-        $this->report["0404"] = 0;
-        $this->report["0405"] = 0;
-        $this->report["0406"] = 0;
-        $this->report["0407"] = 0;
-        $this->report["0408"] = 0;
-        $this->report["0409"] = 0;
-        $this->report["0410"] = 0;
-        $this->report["0411"] = 0;
-        $this->report["0412"] = 0;
-        
-        $this->report["0701"] = 0;
-        $this->report["0702"] = 0;
-        
-        $this->report["0808"] = 0;
-        $this->report["0809"] = 0;
+        $this->categoryCode = $categoryCode;
+        $this->docTypes = $docTypes;
+        $this->ccodes = $ccodes;
+        $this->catPrints = $catPrints;
         
     }
     
@@ -160,67 +114,65 @@ class StatisticalReport implements StatisticalReportInterface
       */
     public function runQueries()
     {
-        $this->getArray0101(); // Finished
-        $this->getArray0103(); // Finished
-        $this->getArray0104(); // Finished
-        $this->getArray0104();
-        $this->getArray0105();
-        $this->getArray0106();
-        $this->getArray0107();
-        $this->getArray0108();
-        $this->getArray0110();
-        $this->getArray0111();
-        $this->getArray0112();
-        $this->getArray0113();
-        $this->getArray0102(); // Finished, must be after 0102-0113
+        $this->report["0101"] = $this->getArray0101(); // Finished
+        $this->report["0103"] = $this->getArray0103(); // Finished
+        $this->report["0104"] = $this->getArray0104(); // Finished
+        $this->report["0105"] = $this->getArray0105(); // Finished
+        $this->report["0106"] = $this->getArray0106(); // Finished
+        $this->report["0107"] = $this->getArray0107(); // Finished
+        $this->report["0108"] = $this->getArray0108(); // Finished
+        $this->report["0109"] = $this->getArray0109(); // Finished
+        $this->report["0110"] = $this->getArray0110(); // Finished
+        $this->report["0111"] = $this->getArray0111(); // Finished
+        $this->report["0112"] = $this->getArray0112(); // Finished
+        $this->report["0113"] = $this->getArray0113(); // Finished
+        $this->report["0102"] = $this->getArray0102(); // Finished, must (not) be after 0102-0113
         
-        $this->getArray0114(); // Finished
-        $this->getArray0115();
-        $this->getArray0116(); // Finished
-        $this->getArray0118();
-        $this->getArray0119();
-        $this->getArray0139(); // Finished, must be after 0101-0119
+        $this->report["0114"] = $this->getArray0114(); // Finished
+        $this->report["0115"] = $this->getArray0115(); // Finished with exception
+        $this->report["0116"] = $this->getArray0116(); // Finished
+        $this->report["0118"] = $this->getArray0118();
+        $this->report["0119"] = $this->getArray0119();
+        $this->report["0139"] = $this->getArray0139(); // Finished, must be after 0101-0119
         
-        $this->getArray0201(); // Finished
-        $this->getArray0202(); // Finished
-        $this->getArray0205(); // Finished
+        $this->report["0201"] = $this->getArray0201(); // Finished
+        $this->report["0202"] = $this->getArray0202(); // Finished
+        $this->report["0205"] = $this->getArray0205(); // Finished
+        $this->report["0206"] = $this->getArray0206(); // Finished
         
-        $this->getArray0302(); // Finished
-        $this->getArray0303(); // Finished
-        $this->getArray0304(); // Finished
-        $this->getArray0305(); // Finished
-        $this->getArray0306(); // Finished
-        $this->getArray0307();
-        $this->getArray0308();
-        $this->getArray0309();
-        $this->getArray0310();
-        $this->getArray0311();
-        $this->getArray0312();
-        $this->getArray0313();
-        $this->getArray0314();
-        $this->getArray0315();
-        $this->getArray0301(); // Finished, must not be after 0301-0315
-        $this->getArray0316();
-        $this->getArray0317(); // Finished
-        $this->getArray0339(); // Finished, must be after 0301-0317
+        $this->report["0302"] = $this->getArray0302(); // Finished
+        $this->report["0303"] = $this->getArray0303(); // Finished
+        $this->report["0304"] = $this->getArray0304(); // Finished
+        $this->report["0305"] = $this->getArray0305(); // Finished
+        $this->report["0306"] = $this->getArray0306(); // Finished
+        $this->report["0307"] = $this->getArray0307(); // Finished
+        $this->report["0308"] = $this->getArray0308(); // Finished
+        $this->report["0309"] = $this->getArray0309(); // Finished
+        $this->report["0310"] = $this->getArray0310(); // Finished
+        $this->report["0311"] = $this->getArray0311(); // Finished
+        $this->report["0312"] = $this->getArray0312(); // Finished
+        $this->report["0313"] = $this->getArray0313(); // Finished
+        $this->report["0314"] = $this->getArray0314(); // Finished
+        $this->report["0315"] = $this->getArray0315(); // Finished
+        $this->report["0301"] = $this->getArray0301(); // Finished, must not be after 0301-0315
+        $this->report["0317"] = $this->getArray0317(); // Finished
+        $this->report["0339"] = $this->getArray0339(); // Finished, must be after 0301-0317
         
-        $this->getArray0402();
-        $this->getArray0403(); // Finished
-        $this->getArray0404(); // Finished
-        $this->getArray0405();
-        $this->getArray0406();
-        $this->getArray0407();
-        $this->getArray0408();
-        $this->getArray0409();
-        $this->getArray0410();
-        $this->getArray0411();
-        $this->getArray0412();
+        $this->report["0401"] = $this->getArray0401(); // Finished, must be before 0402
+        $this->report["0402"] = $this->getArray0402(); // Finished
+        $this->report["0403"] = $this->getArray0403(); // Finished
+        $this->report["0404"] = $this->getArray0404(); // Finished
+        $this->report["0405"] = $this->getArray0405();
+        $this->report["0406"] = $this->getArray0406();
+        $this->report["0407"] = $this->getArray0407();
+        $this->report["0408"] = $this->getArray0408();
+        $this->report["0409"] = $this->getArray0409();
+        $this->report["0410"] = $this->getArray0410();
+        $this->report["0411"] = $this->getArray0411();
+        $this->report["0412"] = $this->getArray0412();
         
-        $this->getArray0701();
-        $this->getArray0702();
-        
-        $this->getArray0808();
-        $this->getArray0809();
+        $this->report["0701"] = $this->getArray0701();
+        $this->report["0702"] = $this->getArray0702();
         
     }
 
@@ -259,7 +211,7 @@ class StatisticalReport implements StatisticalReportInterface
 
         }
 
-        $this->report['0101'] = $results[0]['count'];
+        return $results[0]['count'];
         
     }
 
@@ -268,7 +220,7 @@ class StatisticalReport implements StatisticalReportInterface
       */
     public function getArray0102()
     {
-        
+        /*
         $array = array($this->report["0103"],
                        $this->report["0104"],
                        $this->report["0105"],
@@ -282,7 +234,34 @@ class StatisticalReport implements StatisticalReportInterface
                        $this->report["0113"]
                       );
         
-        $this->report['0102'] =  array_sum($array);
+        return array_sum($array);
+        */
+        
+        try {
+            
+            $type = $this->docTypes["periodics"];
+
+            $query = "SELECT count(`itype`) AS 'count' "
+                    ."FROM `items` "
+                    ."WHERE `dateaccessioned` BETWEEN :from AND :to "
+                    ."  AND `itype` NOT IN ('$type')";
+
+            $stmt = $this->db->prepare($query);
+            $stmt->bindValue(':from', $this->from, PDO::PARAM_STR);
+            $stmt->bindValue(':to', $this->to, PDO::PARAM_STR);
+
+            $stmt->execute();
+
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        } catch(PDOException $ex) {
+
+            Debugger::Log($ex->getMessage());
+            varDump($ex->getMessage());
+
+        }
+
+        return $results[0]['count'];
         
     }
 
@@ -292,13 +271,19 @@ class StatisticalReport implements StatisticalReportInterface
     public function getArray0103()
     {
         
+        $type = $this->docTypes["books"];
+        $ccodes = $this->ccodes["array"]["educationalLiterature"];
+        
         try {
 
             $query = "SELECT count(`itype`) AS 'count' "
                     ."FROM `items` "
-                    ."WHERE `dateaccessioned` <= :to AND `ccode` IN('5', '7')";
+                    ."WHERE `dateaccessioned` BETWEEN :from AND :to "
+                    ."  AND `ccode` IN ('".implode('\',\'', $ccodes)."') "
+                    ."  AND `itype` IN ('$type')";
 
             $stmt = $this->db->prepare($query);
+            $stmt->bindValue(':from', $this->from, PDO::PARAM_STR);
             $stmt->bindValue(':to', $this->to, PDO::PARAM_STR);
 
             $stmt->execute();
@@ -312,7 +297,7 @@ class StatisticalReport implements StatisticalReportInterface
 
         }
 
-        $this->report['0103'] = $results[0]['count'];
+        return $results[0]['count'];
         
     }
 
@@ -322,13 +307,19 @@ class StatisticalReport implements StatisticalReportInterface
     public function getArray0104()
     {
         
+        $type = $this->docTypes["books"];
+        $ccodes = $this->ccodes["array"]["niceLiterature"];
+        
         try {
 
             $query = "SELECT count(`itype`) AS 'count' "
                     ."FROM `items` "
-                    ."WHERE `dateaccessioned` <= :to AND `ccode` IN('6', '8', 'FIC', 'NFIC')";
+                    ."WHERE `dateaccessioned` BETWEEN :from AND :to "
+                    ."  AND `ccode` IN ('".implode('\',\'', $ccodes)."') "
+                    ."  AND `itype` IN ('$type')";
 
             $stmt = $this->db->prepare($query);
+            $stmt->bindValue(':from', $this->from, PDO::PARAM_STR);
             $stmt->bindValue(':to', $this->to, PDO::PARAM_STR);
 
             $stmt->execute();
@@ -342,7 +333,7 @@ class StatisticalReport implements StatisticalReportInterface
 
         }
 
-        $this->report['0104'] = $results[0]['count'];
+        return $results[0]['count'];
         
     }
 
@@ -352,6 +343,30 @@ class StatisticalReport implements StatisticalReportInterface
     public function getArray0105()
     {
         
+        $type = $this->docTypes["handwriting"];
+        
+        try {
+
+            $query = "SELECT count(`itype`) AS 'count' "
+                    ."FROM `items` "
+                    ."WHERE `dateaccessioned` BETWEEN :from AND :to AND `itype` = '$type'";
+
+            $stmt = $this->db->prepare($query);
+            $stmt->bindValue(':from', $this->from, PDO::PARAM_STR);
+            $stmt->bindValue(':to', $this->to, PDO::PARAM_STR);
+
+            $stmt->execute();
+
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        } catch(PDOException $ex) {
+
+            Debugger::Log($ex->getMessage());
+            varDump($ex->getMessage());
+
+        }
+
+        return $results[0]['count'];
     }
 
     /**
@@ -359,7 +374,30 @@ class StatisticalReport implements StatisticalReportInterface
       */
     public function getArray0106()
     {
+        $type = $this->docTypes["micrographicDocument"];
         
+        try {
+
+            $query = "SELECT count(`itype`) AS 'count' "
+                    ."FROM `items` "
+                    ."WHERE `dateaccessioned` BETWEEN :from AND :to AND `itype` = '$type'";
+
+            $stmt = $this->db->prepare($query);
+            $stmt->bindValue(':from', $this->from, PDO::PARAM_STR);
+            $stmt->bindValue(':to', $this->to, PDO::PARAM_STR);
+
+            $stmt->execute();
+
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        } catch(PDOException $ex) {
+
+            Debugger::Log($ex->getMessage());
+            varDump($ex->getMessage());
+
+        }
+
+        return $results[0]['count'];
     }
 
     /**
@@ -367,7 +405,30 @@ class StatisticalReport implements StatisticalReportInterface
       */
     public function getArray0107()
     {
+        $type = $this->docTypes["cartographicDocument"];
         
+        try {
+
+            $query = "SELECT count(`itype`) AS 'count' "
+                    ."FROM `items` "
+                    ."WHERE `dateaccessioned` BETWEEN :from AND :to AND `itype` = '$type'";
+
+            $stmt = $this->db->prepare($query);
+            $stmt->bindValue(':from', $this->from, PDO::PARAM_STR);
+            $stmt->bindValue(':to', $this->to, PDO::PARAM_STR);
+
+            $stmt->execute();
+
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        } catch(PDOException $ex) {
+
+            Debugger::Log($ex->getMessage());
+            varDump($ex->getMessage());
+
+        }
+
+        return $results[0]['count'];
     }
 
     /**
@@ -375,7 +436,30 @@ class StatisticalReport implements StatisticalReportInterface
       */
     public function getArray0108()
     {
+        $type = $this->docTypes["printedMusic"];
         
+        try {
+
+            $query = "SELECT count(`itype`) AS 'count' "
+                    ."FROM `items` "
+                    ."WHERE `dateaccessioned` BETWEEN :from AND :to AND `itype` = '$type'";
+
+            $stmt = $this->db->prepare($query);
+            $stmt->bindValue(':from', $this->from, PDO::PARAM_STR);
+            $stmt->bindValue(':to', $this->to, PDO::PARAM_STR);
+
+            $stmt->execute();
+
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        } catch(PDOException $ex) {
+
+            Debugger::Log($ex->getMessage());
+            varDump($ex->getMessage());
+
+        }
+
+        return $results[0]['count'];
     }
 
     /**
@@ -383,7 +467,30 @@ class StatisticalReport implements StatisticalReportInterface
       */
     public function getArray0109()
     {
+        $type = $this->docTypes["audioDocument"];
         
+        try {
+
+            $query = "SELECT count(`itype`) AS 'count' "
+                    ."FROM `items` "
+                    ."WHERE `dateaccessioned` BETWEEN :from AND :to AND `itype` = '$type'";
+
+            $stmt = $this->db->prepare($query);
+            $stmt->bindValue(':from', $this->from, PDO::PARAM_STR);
+            $stmt->bindValue(':to', $this->to, PDO::PARAM_STR);
+
+            $stmt->execute();
+
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        } catch(PDOException $ex) {
+
+            Debugger::Log($ex->getMessage());
+            varDump($ex->getMessage());
+
+        }
+
+        return $results[0]['count'];
     }
 
     /**
@@ -391,7 +498,30 @@ class StatisticalReport implements StatisticalReportInterface
       */
     public function getArray0110()
     {
+        $type = $this->docTypes["audioPictorialDocument"];
         
+        try {
+
+            $query = "SELECT count(`itype`) AS 'count' "
+                    ."FROM `items` "
+                    ."WHERE `dateaccessioned` BETWEEN :from AND :to AND `itype` = '$type'";
+
+            $stmt = $this->db->prepare($query);
+            $stmt->bindValue(':from', $this->from, PDO::PARAM_STR);
+            $stmt->bindValue(':to', $this->to, PDO::PARAM_STR);
+
+            $stmt->execute();
+
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        } catch(PDOException $ex) {
+
+            Debugger::Log($ex->getMessage());
+            varDump($ex->getMessage());
+
+        }
+
+        return $results[0]['count'];
     }
 
     /**
@@ -399,7 +529,30 @@ class StatisticalReport implements StatisticalReportInterface
       */
     public function getArray0111()
     {
+        $type = $this->docTypes["pictorialDocument"];
         
+        try {
+
+            $query = "SELECT count(`itype`) AS 'count' "
+                    ."FROM `items` "
+                    ."WHERE `dateaccessioned` BETWEEN :from AND :to AND `itype` = '$type'";
+
+            $stmt = $this->db->prepare($query);
+            $stmt->bindValue(':from', $this->from, PDO::PARAM_STR);
+            $stmt->bindValue(':to', $this->to, PDO::PARAM_STR);
+
+            $stmt->execute();
+
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        } catch(PDOException $ex) {
+
+            Debugger::Log($ex->getMessage());
+            varDump($ex->getMessage());
+
+        }
+
+        return $results[0]['count'];
     }
 
     /**
@@ -407,7 +560,30 @@ class StatisticalReport implements StatisticalReportInterface
       */
     public function getArray0112()
     {
+        $type = $this->docTypes["electronicDocument"];
         
+        try {
+
+            $query = "SELECT count(`itype`) AS 'count' "
+                    ."FROM `items` "
+                    ."WHERE `dateaccessioned` BETWEEN :from AND :to AND `itype` = '$type'";
+
+            $stmt = $this->db->prepare($query);
+            $stmt->bindValue(':from', $this->from, PDO::PARAM_STR);
+            $stmt->bindValue(':to', $this->to, PDO::PARAM_STR);
+
+            $stmt->execute();
+
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        } catch(PDOException $ex) {
+
+            Debugger::Log($ex->getMessage());
+            varDump($ex->getMessage());
+
+        }
+
+        return $results[0]['count'];
     }
 
     /**
@@ -415,7 +591,30 @@ class StatisticalReport implements StatisticalReportInterface
       */
     public function getArray0113()
     {
+        $types = $this->docTypes;
         
+        try {
+
+            $query = "SELECT count(`itype`) AS 'count' "
+                    ."FROM `items` "
+                    ."WHERE `dateaccessioned` BETWEEN :from AND :to AND `itype` NOT IN ('".implode('\',\'', $types)."')";
+
+            $stmt = $this->db->prepare($query);
+            $stmt->bindValue(':from', $this->from, PDO::PARAM_STR);
+            $stmt->bindValue(':to', $this->to, PDO::PARAM_STR);
+
+            $stmt->execute();
+
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        } catch(PDOException $ex) {
+
+            Debugger::Log($ex->getMessage());
+            varDump($ex->getMessage());
+
+        }
+
+        return $results[0]['count'];
     }
 
     /**
@@ -448,7 +647,7 @@ class StatisticalReport implements StatisticalReportInterface
 
         }
 
-        $this->report['0114'] = $results[0]['count'];      
+        return $results[0]['count'];      
         
     }
 
@@ -457,6 +656,8 @@ class StatisticalReport implements StatisticalReportInterface
       */
     public function getArray0115()
     {
+        
+        return "-";
         
     }
 
@@ -487,7 +688,7 @@ class StatisticalReport implements StatisticalReportInterface
 
         }
 
-        $this->report['0116'] = $results[0]['count'];
+        return $results[0]['count'];
         
     }
 
@@ -497,7 +698,8 @@ class StatisticalReport implements StatisticalReportInterface
       */
     public function getArray0118()
     {
-        
+        $count = 0;
+        return (int) $count;
     }
 
     /**
@@ -505,7 +707,8 @@ class StatisticalReport implements StatisticalReportInterface
       */
     public function getArray0119()
     {
-        
+        $count = 0;
+        return (int) $count;
     }
 
     /**
@@ -530,12 +733,11 @@ class StatisticalReport implements StatisticalReportInterface
                        $this->report["0114"],
                        $this->report["0115"],
                        $this->report["0116"],
-                       $this->report["0117"],
                        $this->report["0118"],
                        $this->report["0119"],
                       );
         
-        $this->report['0139'] = array_sum($array);
+        return array_sum($array);
         
     }
 
@@ -547,9 +749,13 @@ class StatisticalReport implements StatisticalReportInterface
         
         try {
 
-            $query = "SELECT count(*) AS 'count' "
-                    ."FROM `borrowers` "
-                    ."WHERE `dateenrolled` BETWEEN :from AND :to";
+            $query = "SELECT count(`s`.`borrowernumber`) AS 'count' "
+                    ."FROM `statistics` `s` "
+                    ."LEFT JOIN `accountlines` `a` "
+                    ."ON `a`.`accountlines_id` = `s`.`other` "
+                    ."WHERE DATE(`s`.`datetime`) BETWEEN :from AND :to "
+                    ."  AND `s`.`type` = 'payment' "
+                    ."  AND `a`.`accounttype` = 'A'";
 
             $stmt = $this->db->prepare($query);
             $stmt->bindValue(':from', $this->from, PDO::PARAM_STR);
@@ -566,7 +772,7 @@ class StatisticalReport implements StatisticalReportInterface
 
         }
 
-        $this->report['0201'] = $results[0]['count'];
+        return $results[0]['count'];
         
     }
 
@@ -578,10 +784,16 @@ class StatisticalReport implements StatisticalReportInterface
         
         try {
 
-            $query = "SELECT count(*) AS 'count' "
-                    ."FROM `borrowers` "
-                    ."WHERE `dateofbirth` > DATE_SUB(CURRENT_DATE(),INTERVAL 15 YEAR) "
-                    ."AND `dateenrolled` BETWEEN :from AND :to";
+            $query = "SELECT count(`s`.`borrowernumber`) AS 'count' "
+                    ."FROM `statistics` `s` "
+                    ."LEFT JOIN `accountlines` `a` "
+                    ."ON `a`.`accountlines_id` = `s`.`other` "
+                    ."LEFT OUTER JOIN `borrowers` `b` "
+		    ."ON `b`.`borrowernumber` = `s`.`borrowernumber` "
+                    ."WHERE DATE(`s`.`datetime`) BETWEEN :from AND :to "
+                    ."  AND `s`.`type` = 'payment' "
+                    ."  AND `a`.`accounttype` = 'A' "
+                    ."  AND `b`.`dateofbirth` > DATE_SUB(CURRENT_DATE(),INTERVAL 15 YEAR) ";
 
             $stmt = $this->db->prepare($query);
             $stmt->bindValue(':from', $this->from, PDO::PARAM_STR);
@@ -598,7 +810,7 @@ class StatisticalReport implements StatisticalReportInterface
 
         }
 
-        $this->report['0202'] = $results[0]['count'];
+        return $results[0]['count'];
         
     }
 
@@ -633,7 +845,38 @@ class StatisticalReport implements StatisticalReportInterface
 
         }
 
-        $this->report['0205'] = $results[0]['count'];
+        return $results[0]['count'];
+                
+    }
+    
+     /**
+      * {@inheritDoc}
+      */
+    public function getArray0206()
+    {
+
+        try {
+
+            $query = "SELECT COALESCE(SUM(`internet`), 0) AS `sum` "
+                    ."FROM `cen_circulations` "
+                    ."WHERE DATE(`datetime`) BETWEEN :from AND :to";
+
+            $stmt = $this->db->prepare($query);
+            $stmt->bindValue(':from', $this->from, PDO::PARAM_STR);
+            $stmt->bindValue(':to', $this->to, PDO::PARAM_STR);
+
+            $stmt->execute();
+
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        } catch(PDOException $ex) {
+
+            Debugger::Log($ex->getMessage());
+            varDump($ex->getMessage());
+
+        }
+
+        return $results[0]['sum'];
                 
     }
 
@@ -665,7 +908,7 @@ class StatisticalReport implements StatisticalReportInterface
 
         }
         
-        $this->report['0301'] = $results[0]['count'];
+        return $results[0]['count'];
         
     }
 
@@ -675,6 +918,8 @@ class StatisticalReport implements StatisticalReportInterface
     public function getArray0302()
     {
         
+        $ccodes = $this->ccodes["array"]["educationalLiteratureForAdults"];
+        
         try{
                 
             $query = "SELECT count(`s`.`datetime`) AS 'count' "
@@ -683,7 +928,7 @@ class StatisticalReport implements StatisticalReportInterface
 		    ."ON `s`.`itemnumber` = `i`.`itemnumber` "
                     ."WHERE `s`.`datetime` BETWEEN :from AND :to "
                     ."  AND `s`.`type` IN ('issue','renew') "
-		    ."  AND `i`.`ccode` IN ('5')";
+		    ."  AND `i`.`ccode` IN ('".implode('\',\'', $ccodes)."')";
 
             $stmt = $this->db->prepare($query);
             $stmt->bindValue(':from', $this->from, PDO::PARAM_STR);
@@ -700,7 +945,7 @@ class StatisticalReport implements StatisticalReportInterface
 
         }
         
-        $this->report['0302'] = $results[0]['count'];
+        return $results[0]['count'];
         
     }
 
@@ -710,6 +955,8 @@ class StatisticalReport implements StatisticalReportInterface
     public function getArray0303()
     {
         
+        $ccodes = $this->ccodes["array"]["niceLiteratureForAdults"];
+        
         try{
                 
             $query = "SELECT count(`s`.`datetime`) AS 'count' "
@@ -718,7 +965,7 @@ class StatisticalReport implements StatisticalReportInterface
 		    ."ON `s`.`itemnumber` = `i`.`itemnumber` "
                     ."WHERE `s`.`datetime` BETWEEN :from AND :to "
                     ."  AND `s`.`type` IN ('issue','renew') "
-		    ."  AND `i`.`ccode` IN ('6', 'FIC', 'NFIC')";
+		    ."  AND `i`.`ccode` IN ('".implode('\',\'', $ccodes)."')";
 
             $stmt = $this->db->prepare($query);
             $stmt->bindValue(':from', $this->from, PDO::PARAM_STR);
@@ -735,7 +982,7 @@ class StatisticalReport implements StatisticalReportInterface
 
         }
         
-        $this->report['0303'] = $results[0]['count'];
+        return $results[0]['count'];
         
     }
 
@@ -745,6 +992,8 @@ class StatisticalReport implements StatisticalReportInterface
     public function getArray0304()
     {
         
+        $ccodes = $this->ccodes["array"]["educationalLiteratureForChildren"];
+        
         try{
                 
             $query = "SELECT count(`s`.`datetime`) AS 'count' "
@@ -753,7 +1002,7 @@ class StatisticalReport implements StatisticalReportInterface
 		    ."ON `s`.`itemnumber` = `i`.`itemnumber` "
                     ."WHERE `s`.`datetime` BETWEEN :from AND :to "
                     ."  AND `s`.`type` IN ('issue','renew') "
-		    ."  AND `i`.`ccode` IN ('7')";
+		    ."  AND `i`.`ccode` IN ('".implode('\',\'', $ccodes)."')";
 
             $stmt = $this->db->prepare($query);
             $stmt->bindValue(':from', $this->from, PDO::PARAM_STR);
@@ -770,7 +1019,7 @@ class StatisticalReport implements StatisticalReportInterface
 
         }
         
-        $this->report['0304'] = $results[0]['count'];
+        return $results[0]['count'];
         
     }
 
@@ -780,6 +1029,8 @@ class StatisticalReport implements StatisticalReportInterface
     public function getArray0305()
     {
         
+        $ccodes = $this->ccodes["array"]["niceLiteratureForChildren"];
+        
         try{
                 
             $query = "SELECT count(`s`.`datetime`) AS 'count' "
@@ -788,7 +1039,7 @@ class StatisticalReport implements StatisticalReportInterface
 		    ."ON `s`.`itemnumber` = `i`.`itemnumber` "
                     ."WHERE `s`.`datetime` BETWEEN :from AND :to "
                     ."  AND `s`.`type` IN ('issue','renew') "
-		    ."  AND `i`.`ccode` IN ('8', 'FIC', 'NFIC')";
+		    ."  AND `i`.`ccode` IN ('".implode('\',\'', $ccodes)."')";
 
             $stmt = $this->db->prepare($query);
             $stmt->bindValue(':from', $this->from, PDO::PARAM_STR);
@@ -805,7 +1056,7 @@ class StatisticalReport implements StatisticalReportInterface
 
         }
         
-        $this->report['0305'] = $results[0]['count'];
+        return $results[0]['count'];
         
     }
 
@@ -815,6 +1066,8 @@ class StatisticalReport implements StatisticalReportInterface
     public function getArray0306()
     {
         
+        $type = $this->docTypes["periodics"];
+        
         try{
                 
             $query = "SELECT count(`s`.`datetime`) AS 'count' "
@@ -823,7 +1076,7 @@ class StatisticalReport implements StatisticalReportInterface
 		    ."ON `s`.`itemnumber` = `i`.`itemnumber` "
                     ."WHERE `s`.`datetime` BETWEEN :from AND :to "
                     ."  AND `s`.`type` IN ('issue','renew') "
-		    ."  AND `i`.`itype` IN ('PE')";
+		    ."  AND `i`.`itype` IN ('$type')";
 
             $stmt = $this->db->prepare($query);
             $stmt->bindValue(':from', $this->from, PDO::PARAM_STR);
@@ -840,7 +1093,7 @@ class StatisticalReport implements StatisticalReportInterface
 
         }
         
-        $this->report['0306'] = $results[0]['count'];
+        return $results[0]['count'];
         
     }
 
@@ -849,7 +1102,34 @@ class StatisticalReport implements StatisticalReportInterface
       */
     public function getArray0307()
     {
+        $type = $this->docTypes["handwriting"];
         
+        try{
+                
+            $query = "SELECT count(`s`.`datetime`) AS 'count' "
+                    ."FROM `statistics` `s` "
+		    ."LEFT JOIN `items` `i` "
+		    ."ON `s`.`itemnumber` = `i`.`itemnumber` "
+                    ."WHERE `s`.`datetime` BETWEEN :from AND :to "
+                    ."  AND `s`.`type` IN ('issue','renew') "
+		    ."  AND `i`.`itype` IN ('$type')";
+
+            $stmt = $this->db->prepare($query);
+            $stmt->bindValue(':from', $this->from, PDO::PARAM_STR);
+            $stmt->bindValue(':to', $this->to, PDO::PARAM_STR);
+
+            $stmt->execute();
+
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        } catch(PDOException $ex) {
+
+            Debugger::Log($ex->getMessage());
+            varDump($ex->getMessage());
+
+        }
+        
+        return $results[0]['count'];
     }
 
     /**
@@ -857,7 +1137,34 @@ class StatisticalReport implements StatisticalReportInterface
       */
     public function getArray0308()
     {
+        $type = $this->docTypes["micrographicDocument"];
         
+        try{
+                
+            $query = "SELECT count(`s`.`datetime`) AS 'count' "
+                    ."FROM `statistics` `s` "
+		    ."LEFT JOIN `items` `i` "
+		    ."ON `s`.`itemnumber` = `i`.`itemnumber` "
+                    ."WHERE `s`.`datetime` BETWEEN :from AND :to "
+                    ."  AND `s`.`type` IN ('issue','renew') "
+		    ."  AND `i`.`itype` IN ('$type')";
+
+            $stmt = $this->db->prepare($query);
+            $stmt->bindValue(':from', $this->from, PDO::PARAM_STR);
+            $stmt->bindValue(':to', $this->to, PDO::PARAM_STR);
+
+            $stmt->execute();
+
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        } catch(PDOException $ex) {
+
+            Debugger::Log($ex->getMessage());
+            varDump($ex->getMessage());
+
+        }
+        
+        return $results[0]['count'];
     }
 
     /**
@@ -865,7 +1172,34 @@ class StatisticalReport implements StatisticalReportInterface
       */
     public function getArray0309()
     {
+        $type = $this->docTypes["cartographicDocument"];
         
+        try{
+                
+            $query = "SELECT count(`s`.`datetime`) AS 'count' "
+                    ."FROM `statistics` `s` "
+		    ."LEFT JOIN `items` `i` "
+		    ."ON `s`.`itemnumber` = `i`.`itemnumber` "
+                    ."WHERE `s`.`datetime` BETWEEN :from AND :to "
+                    ."  AND `s`.`type` IN ('issue','renew') "
+		    ."  AND `i`.`itype` IN ('$type')";
+
+            $stmt = $this->db->prepare($query);
+            $stmt->bindValue(':from', $this->from, PDO::PARAM_STR);
+            $stmt->bindValue(':to', $this->to, PDO::PARAM_STR);
+
+            $stmt->execute();
+
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        } catch(PDOException $ex) {
+
+            Debugger::Log($ex->getMessage());
+            varDump($ex->getMessage());
+
+        }
+        
+        return $results[0]['count'];
     }
 
     /**
@@ -873,7 +1207,34 @@ class StatisticalReport implements StatisticalReportInterface
       */
     public function getArray0310()
     {
+        $type = $this->docTypes["printedMusic"];
         
+        try{
+                
+            $query = "SELECT count(`s`.`datetime`) AS 'count' "
+                    ."FROM `statistics` `s` "
+		    ."LEFT JOIN `items` `i` "
+		    ."ON `s`.`itemnumber` = `i`.`itemnumber` "
+                    ."WHERE `s`.`datetime` BETWEEN :from AND :to "
+                    ."  AND `s`.`type` IN ('issue','renew') "
+		    ."  AND `i`.`itype` IN ('$type')";
+
+            $stmt = $this->db->prepare($query);
+            $stmt->bindValue(':from', $this->from, PDO::PARAM_STR);
+            $stmt->bindValue(':to', $this->to, PDO::PARAM_STR);
+
+            $stmt->execute();
+
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        } catch(PDOException $ex) {
+
+            Debugger::Log($ex->getMessage());
+            varDump($ex->getMessage());
+
+        }
+        
+        return $results[0]['count'];
     }
 
     /**
@@ -881,7 +1242,34 @@ class StatisticalReport implements StatisticalReportInterface
       */
     public function getArray0311()
     {
+        $type = $this->docTypes["audioDocument"];
         
+        try{
+                
+            $query = "SELECT count(`s`.`datetime`) AS 'count' "
+                    ."FROM `statistics` `s` "
+		    ."LEFT JOIN `items` `i` "
+		    ."ON `s`.`itemnumber` = `i`.`itemnumber` "
+                    ."WHERE `s`.`datetime` BETWEEN :from AND :to "
+                    ."  AND `s`.`type` IN ('issue','renew') "
+		    ."  AND `i`.`itype` IN ('$type')";
+
+            $stmt = $this->db->prepare($query);
+            $stmt->bindValue(':from', $this->from, PDO::PARAM_STR);
+            $stmt->bindValue(':to', $this->to, PDO::PARAM_STR);
+
+            $stmt->execute();
+
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        } catch(PDOException $ex) {
+
+            Debugger::Log($ex->getMessage());
+            varDump($ex->getMessage());
+
+        }
+        
+        return $results[0]['count'];
     }
     
     /**
@@ -889,7 +1277,34 @@ class StatisticalReport implements StatisticalReportInterface
       */
     public function getArray0312() 
     {
+        $type = $this->docTypes["audioPictorialDocument"];
         
+        try{
+                
+            $query = "SELECT count(`s`.`datetime`) AS 'count' "
+                    ."FROM `statistics` `s` "
+		    ."LEFT JOIN `items` `i` "
+		    ."ON `s`.`itemnumber` = `i`.`itemnumber` "
+                    ."WHERE `s`.`datetime` BETWEEN :from AND :to "
+                    ."  AND `s`.`type` IN ('issue','renew') "
+		    ."  AND `i`.`itype` IN ('$type')";
+
+            $stmt = $this->db->prepare($query);
+            $stmt->bindValue(':from', $this->from, PDO::PARAM_STR);
+            $stmt->bindValue(':to', $this->to, PDO::PARAM_STR);
+
+            $stmt->execute();
+
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        } catch(PDOException $ex) {
+
+            Debugger::Log($ex->getMessage());
+            varDump($ex->getMessage());
+
+        }
+        
+        return $results[0]['count'];
     }
 
     /**
@@ -897,7 +1312,34 @@ class StatisticalReport implements StatisticalReportInterface
       */
     public function getArray0313()
     {
+        $type = $this->docTypes["pictorialDocument"];
         
+        try{
+                
+            $query = "SELECT count(`s`.`datetime`) AS 'count' "
+                    ."FROM `statistics` `s` "
+		    ."LEFT JOIN `items` `i` "
+		    ."ON `s`.`itemnumber` = `i`.`itemnumber` "
+                    ."WHERE `s`.`datetime` BETWEEN :from AND :to "
+                    ."  AND `s`.`type` IN ('issue','renew') "
+		    ."  AND `i`.`itype` IN ('$type')";
+
+            $stmt = $this->db->prepare($query);
+            $stmt->bindValue(':from', $this->from, PDO::PARAM_STR);
+            $stmt->bindValue(':to', $this->to, PDO::PARAM_STR);
+
+            $stmt->execute();
+
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        } catch(PDOException $ex) {
+
+            Debugger::Log($ex->getMessage());
+            varDump($ex->getMessage());
+
+        }
+        
+        return $results[0]['count'];
     }
 
     /**
@@ -905,7 +1347,34 @@ class StatisticalReport implements StatisticalReportInterface
       */
     public function getArray0314()
     {
+        $type = $this->docTypes["electronicDocument"];
         
+        try{
+                
+            $query = "SELECT count(`s`.`datetime`) AS 'count' "
+                    ."FROM `statistics` `s` "
+		    ."LEFT JOIN `items` `i` "
+		    ."ON `s`.`itemnumber` = `i`.`itemnumber` "
+                    ."WHERE `s`.`datetime` BETWEEN :from AND :to "
+                    ."  AND `s`.`type` IN ('issue','renew') "
+		    ."  AND `i`.`itype` IN ('$type')";
+
+            $stmt = $this->db->prepare($query);
+            $stmt->bindValue(':from', $this->from, PDO::PARAM_STR);
+            $stmt->bindValue(':to', $this->to, PDO::PARAM_STR);
+
+            $stmt->execute();
+
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        } catch(PDOException $ex) {
+
+            Debugger::Log($ex->getMessage());
+            varDump($ex->getMessage());
+
+        }
+        
+        return $results[0]['count'];
     }
 
     /**
@@ -913,15 +1382,34 @@ class StatisticalReport implements StatisticalReportInterface
       */
     public function getArray0315()
     {
+        $types = $this->docTypes;
         
-    }
+        try{
+                
+            $query = "SELECT count(`s`.`datetime`) AS 'count' "
+                    ."FROM `statistics` `s` "
+		    ."LEFT JOIN `items` `i` "
+		    ."ON `s`.`itemnumber` = `i`.`itemnumber` "
+                    ."WHERE `s`.`datetime` BETWEEN :from AND :to "
+                    ."  AND `s`.`type` IN ('issue','renew') "
+		    ."  AND `i`.`itype` NOT IN ('".implode('\',\'', $types)."')";
 
-    /**
-      * {@inheritDoc}
-      */
-    public function getArray0316()
-    {
+            $stmt = $this->db->prepare($query);
+            $stmt->bindValue(':from', $this->from, PDO::PARAM_STR);
+            $stmt->bindValue(':to', $this->to, PDO::PARAM_STR);
+
+            $stmt->execute();
+
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        } catch(PDOException $ex) {
+
+            Debugger::Log($ex->getMessage());
+            varDump($ex->getMessage());
+
+        }
         
+        return $results[0]['count'];
     }
 
     /**
@@ -952,7 +1440,7 @@ class StatisticalReport implements StatisticalReportInterface
 
         }
         
-        $this->report['0317'] = $results[0]['count'];
+        return $results[0]['count'];
         
     }
     
@@ -977,11 +1465,46 @@ class StatisticalReport implements StatisticalReportInterface
                        $this->report["0313"],
                        $this->report["0314"],
                        $this->report["0315"],
-                       $this->report["0316"],
                        $this->report["0317"]
                       );
         
-        $this->report['0339'] = array_sum($array);
+        return array_sum($array);
+        
+    }
+    
+    /**
+      * {@inheritDoc}
+      */
+    public function getArray0401()
+    {
+        
+        try{
+                
+            $query = "SELECT COUNT(*) AS 'count' "
+                    ."FROM `statistics` `s` "
+                    ."INNER JOIN `borrowers` `b` "
+                    ."ON `b`.`borrowernumber` = `s`.`borrowernumber` "
+                    ."WHERE `s`.`type` = 'issue' "
+                    ."    AND `b`.`categorycode` = :categorycode "
+                    ."    AND DATE(`s`.`datetime`) BETWEEN :from AND :to";
+
+            $stmt = $this->db->prepare($query);
+            $stmt->bindValue(':from', $this->from, PDO::PARAM_STR);
+            $stmt->bindValue(':to', $this->to, PDO::PARAM_STR);
+            $stmt->bindValue(':categorycode', $this->categoryCode, PDO::PARAM_STR);
+
+            $stmt->execute();
+
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        } catch(PDOException $ex) {
+
+            Debugger::Log($ex->getMessage());
+            varDump($ex->getMessage());
+
+        }
+        
+        return $results[0]['count'];
         
     }
 
@@ -990,6 +1513,8 @@ class StatisticalReport implements StatisticalReportInterface
       */
     public function getArray0402()
     {
+        
+        return $this->report['0401'];
         
     }
 
@@ -1023,7 +1548,7 @@ class StatisticalReport implements StatisticalReportInterface
 
         }
         
-        $this->report['0403'] = $results[0]['count'];
+        return $results[0]['count'];
         
     }
 
@@ -1060,7 +1585,7 @@ class StatisticalReport implements StatisticalReportInterface
 
         }
         
-        $this->report['0404'] = $results[0]['count'];
+        return $results[0]['count'];
         
     }
 
@@ -1069,7 +1594,8 @@ class StatisticalReport implements StatisticalReportInterface
       */
     public function getArray0405()
     {
-        
+        $count = 0;
+        return (int) $count;
     }
 
     /**
@@ -1077,7 +1603,8 @@ class StatisticalReport implements StatisticalReportInterface
       */
     public function getArray0406()
     {
-        
+        $count = 0;
+        return (int) $count;
     }
 
     /**
@@ -1085,7 +1612,8 @@ class StatisticalReport implements StatisticalReportInterface
       */
     public function getArray0407()
     {
-        
+        $count = 0;
+        return (int) $count;
     }
 
     /**
@@ -1093,7 +1621,8 @@ class StatisticalReport implements StatisticalReportInterface
       */
     public function getArray0408()
     {
-        
+        $count = 0;
+        return (int) $count;
     }
 
     /**
@@ -1101,7 +1630,8 @@ class StatisticalReport implements StatisticalReportInterface
       */
     public function getArray0409()
     {
-        
+        $count = 0;
+        return (int) $count;
     }
 
     /**
@@ -1109,7 +1639,8 @@ class StatisticalReport implements StatisticalReportInterface
       */
     public function getArray0410()
     {
-        
+        $count = 0;
+        return (int) $count;
     }
 
     /**
@@ -1117,7 +1648,8 @@ class StatisticalReport implements StatisticalReportInterface
       */
     public function getArray0411()
     {
-        
+        $count = 0;
+        return (int) $count;
     }
 
     /**
@@ -1125,7 +1657,8 @@ class StatisticalReport implements StatisticalReportInterface
       */
     public function getArray0412()
     {
-        
+        $count = 0;
+        return (int) $count;
     }
 
     /**
@@ -1133,7 +1666,8 @@ class StatisticalReport implements StatisticalReportInterface
       */
     public function getArray0701()
     {
-        
+        $count = 0;
+        return (int) $count;
     }
 
     /**
@@ -1141,23 +1675,40 @@ class StatisticalReport implements StatisticalReportInterface
       */
     public function getArray0702()
     {
-        
+        $count = 0;
+        return (int) $count;
     }
-
-    /**
-      * {@inheritDoc}
-      */
-    public function getArray0808()
+    
+    public function getArrayTisk()
     {
-        
-    }
+        try {
+            
+            $catPrints = $this->catPrints;
 
-    /**
-      * {@inheritDoc}
-      */
-    public function getArray0809()
-    {
-        
+            $query = "SELECT count(*) as `count` "
+                    ."FROM `statistics` `s` "
+                    ."JOIN `accountlines` `a` "
+                    ."  ON `a`.`accountlines_id` = `s`.`other` "
+                    ."WHERE DATE(`s`.`datetime`) BETWEEN :from AND :to "
+                    ."  AND `s`.`type` = :type "
+                    ."  AND `a`.`accounttype` IN ('".implode('\',\'', $catPrints)."')";
+
+            $stmt = $this->db->prepare($query);
+            $stmt->bindValue(':from', $this->from, PDO::PARAM_STR);
+            $stmt->bindValue(':to', $this->to, PDO::PARAM_STR);
+            $stmt->bindValue(':type', "payment", PDO::PARAM_STR);
+
+            $stmt->execute();
+
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        } catch(PDOException $ex) {
+
+            Debugger::Log($ex->getMessage());
+            varDump($ex->getMessage());
+
+        }
+        return $results[0]["count"];
     }
 
 }

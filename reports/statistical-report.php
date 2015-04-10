@@ -1,20 +1,4 @@
 <?php
-# This file is part of Koha.
-#
-# Copyright (C) 2014  MartinKravec
-#
-# Koha is free software; you can redistribute it and/or modify it
-# under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 3 of the License, or
-# (at your option) any later version.
-#
-# Koha is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Koha; if not, see <http://www.gnu.org/licenses>.
 
     session_start();
 
@@ -299,6 +283,12 @@
                             <td><?= $report_text->st_report_item_0205 ?></td>
                             <td><i class='fa fa-clipboard copy'></i><span id="0205"></span></td>
                         </tr>
+                        <tr class='st_report_part_2'>
+                            <td></td>
+                            <td>0206</td>
+                            <td><?= $report_text->st_report_item_0206 ?></td>
+                            <td><i class='fa fa-clipboard copy'></i><span id="0206"></span></td>
+                        </tr>
                         
                         <tr class='st_report_part_3'>
                             <td><?= $report_text->st_report_part_3 ?></td>
@@ -392,12 +382,6 @@
                         </tr>
                         <tr class='st_report_part_3'>
                             <td></td>
-                            <td>0316</td>
-                            <td><?= $report_text->st_report_item_0316 ?></td>
-                            <td><i class='fa fa-clipboard copy'></i><span id="0316"></span></td>
-                        </tr>
-                        <tr class='st_report_part_3'>
-                            <td></td>
                             <td>0317</td>
                             <td><?= $report_text->st_report_item_0317 ?></td>
                             <td><i class='fa fa-clipboard copy'></i><span id="0317"></span></td>
@@ -411,6 +395,12 @@
                         
                         <tr class='st_report_part_4'>
                             <td><?= $report_text->st_report_part_4 ?></td>
+                            <td>0401</td>
+                            <td><?= $report_text->st_report_item_0401 ?></td>
+                            <td><i class='fa fa-clipboard copy'></i><span id="0401"></span></td>
+                        </tr>
+                        <tr class='st_report_part_4'>
+                            <td></td>
                             <td>0402</td>
                             <td><?= $report_text->st_report_item_0402 ?></td>
                             <td><i class='fa fa-clipboard copy'></i><span id="0402"></span></td>
@@ -487,18 +477,6 @@
                             <td>0702</td>
                             <td><?= $report_text->st_report_item_0702 ?></td>
                             <td><i class='fa fa-clipboard copy'></i><span id="0702"></span></td>
-                        </tr>
-                        <tr class='st_report_part_8'>
-                            <td><?= $report_text->st_report_part_8 ?></td>
-                            <td>0808</td>
-                            <td><?= $report_text->st_report_item_0808 ?></td>
-                            <td><i class='fa fa-clipboard copy'></i><span id="0808"></span></td>
-                        </tr>
-                        <tr class='st_report_part_8'>
-                            <td></td>
-                            <td>0809</td>
-                            <td><?= $report_text->st_report_item_0809 ?></td>
-                            <td><i class='fa fa-clipboard copy'></i><span id="0809"></span></td>
                         </tr>
                     </tbody>
                 </table>

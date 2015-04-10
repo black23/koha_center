@@ -80,10 +80,10 @@ interface StatisticalReportInterface
     public function getArray0313();
     public function getArray0314();
     public function getArray0315();
-    public function getArray0316();
     public function getArray0317();
     public function getArray0339();
     
+    public function getArray0401();
     public function getArray0402();
     public function getArray0403();
     public function getArray0404();
@@ -98,9 +98,6 @@ interface StatisticalReportInterface
     
     public function getArray0701();
     public function getArray0702();
-    
-    public function getArray0808();
-    
-    public function getArray0809();
+
     
 }

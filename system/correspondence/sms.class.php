@@ -246,7 +246,7 @@ class Sms{
         
         try {
 
-            $query = "SELECT * FROM `cen_smshistory` WHERE type=:type ORDER BY `time` LIMIT :limit";
+            $query = "SELECT * FROM `cen_smshistory` WHERE type=:type ORDER BY `time` DESC LIMIT :limit";
 
             $stmt = $this->db->prepare($query);
             $stmt->bindValue(':type', $type, PDO::PARAM_STR);

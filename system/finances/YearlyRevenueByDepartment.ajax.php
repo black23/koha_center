@@ -53,14 +53,12 @@
 				."ON `a`.`accountlines_id` = `s`.`other` "
                 ."LEFT OUTER JOIN `branches` `b` "
                 ."ON `s`.`branch` = `b`.`branchcode` "
-                ."LEFT OUTER JOIN `accounttypes` `t` "
-                ."ON `t`.`code` = `a`.`accounttype` "
-				."WHERE `s`.`branch` IN ('".implode('\',\'', $myArray)."') AND DATE(`s`.`datetime`) BETWEEN :from AND :to AND `s`.`type` = :type "
+                //."LEFT OUTER JOIN `accounttypes` `t` "
+                //."ON `t`.`code` = `a`.`accounttype` "
+		."WHERE `s`.`branch` IN ('".implode('\',\'', $myArray)."') AND DATE(`s`.`datetime`) BETWEEN :from AND :to AND `s`.`type` = :type "
                 ."GROUP BY `s`.`branch`, `a`.`accounttype`";
         
 	try {
-		
-		$db->beginTransaction();
 
 		$stmt = $db->prepare($query);
 		$stmt->bindValue(':from', str_replace(":", "", $from), PDO::PARAM_STR);
@@ -69,9 +67,7 @@
 		$stmt->execute();
 
 		$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-	 
-		$db->commit();
-		
+
 	} catch(PDOException $ex) {
 		
 		Debugger::log($ex->getMessage());
