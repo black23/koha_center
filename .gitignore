@@ -1,3 +1,4 @@
 log/*.log
 system/systemConfig.php
 /nbproject
+.project
