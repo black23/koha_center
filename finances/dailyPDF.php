@@ -33,7 +33,7 @@
     $allOthers = $reservations+$prints+$others;
     
     $newDate = new DateTime($date);
-    $day = $newDate->format('d.m');
+    $day = $newDate->format('d. n. Y');
 
     /*********************************/
     
