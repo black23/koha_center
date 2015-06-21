@@ -1,3 +1,5 @@
+0. smazat, prosim
+
 1. Copy /center folder to your server
 
 2. Change login data to database in:
