@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * 
+ */
+
     require_once __DIR__."/StatisticalReportInterface.php";
     
     use Tracy\Debugger;
@@ -793,7 +797,7 @@ class StatisticalReport implements StatisticalReportInterface
                     ."WHERE DATE(`s`.`datetime`) BETWEEN :from AND :to "
                     ."  AND `s`.`type` = 'payment' "
                     ."  AND `a`.`accounttype` = 'A' "
-                    ."  AND `b`.`dateofbirth` > DATE_SUB(CURRENT_DATE(),INTERVAL 15 YEAR) ";
+                    ."  AND `b`.`dateofbirth` > DATE_SUB(`s`.`datetime`,INTERVAL 15 YEAR) ";
 
             $stmt = $this->db->prepare($query);
             $stmt->bindValue(':from', $this->from, PDO::PARAM_STR);

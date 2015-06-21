@@ -820,7 +820,7 @@ class KrizovatkaDenik extends StatisticalReport
                     ."WHERE DATE(`s`.`datetime`) BETWEEN :from AND :to "
                     ."  AND `s`.`type` = 'payment' "
                     ."  AND `a`.`accounttype` = 'A' "
-                    ."  AND `b`.`dateofbirth` > DATE_SUB(CURRENT_DATE(),INTERVAL 15 YEAR) "
+                    ."  AND `b`.`dateofbirth` > DATE_SUB(`s`.`datetime`,INTERVAL 15 YEAR) "
                     ."GROUP BY DATE(`s`.`datetime`)";
 
             $stmt = $this->db->prepare($query);
