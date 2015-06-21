@@ -29,13 +29,12 @@
             
         ?>
 
-        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
-<style>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+        <style>
             .ui-datepicker-calendar {
                 display: none;
             }
         </style>
-        
     </head>
 
     <body>
@@ -46,12 +45,12 @@
 
     <!-- Page Content -->
     <div class="container">
-		<div class="row">
-			<ol class="breadcrumb">
-				<li><a href="../index.php"><?php echo $text->home; ?></a></li>
-                                <li class="active"><?php echo $text->statistical_reports; ?></li>
-			</ol>
-		</div>
+        <div class="row">
+                <ol class="breadcrumb">
+                        <li><a href="../index.php"><?php echo $text->home; ?></a></li>
+                        <li class="active"><?php echo $text->statistical_reports; ?></li>
+                </ol>
+        </div>
 
         <div class="row">
         
@@ -68,9 +67,9 @@
                                             <label for="time" class="control-label"><?= $text->choose_range ?></label>
                                             <div class="form-group">
                                                 <label class="control-label" for="from"><?php echo $text->from_date; ?></label>
-                                                <input type='text' name="date" id="from" class="form-control date" value="<?php echo date("Y-m-d"); ?>" placeholder="<?php echo date("Y-m-d"); ?>">
+                                                <input type='text' name="date" id="from" class="form-control date">
                                                 <label class="control-label" for="to"><?php echo $text->to_date; ?></label>
-                                                <input type='text' name="date" id="to" class="form-control date" value="<?php echo date("Y-m-d"); ?>" placeholder="<?php echo date("Y-m-d"); ?>">
+                                                <input type='text' name="date" id="to" class="form-control date">
                                             </div>
                                           </div>
                                     </div>
@@ -82,8 +81,6 @@
                         </div>
                     </div>
                </div>
-            </div>
-            <!-- /.row -->
 
         </div>
         <!-- /.row -->
@@ -99,57 +96,36 @@
     <!-- /.container -->
 
     <!-- jQuery -->
-    <script src="../js/jquery.min.js"></script>
+    <!--<script src="../js/jquery.min.js"></script>-->
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="../js/bootstrap.min.js"></script>
     <script src="../js/bootstrap-tooltip.js"></script>
     
-    <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
-    
-    <?php
-        if (isset($langShortcut) AND ($langShortcut == "cs")) {
-            echo "<script src='../js/datepicker-cs.js'></script>";
-        }
-    ?>
+    <!--<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>-->
+    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
     
     <script>
-        $( document ).ready(function() {
+        jQuery( document ).ready(function( $ ) {
             
-            $( "#from" ).datepicker({
-                // defaultDate: "-1w",
+            $( "#from, #to" ).datepicker({
                 changeMonth: true,
                 changeYear: true,
                 showButtonPanel: true,
                 dateFormat: "yy-mm-dd",
-                onClose: function( selectedDate ) {
-                    //$( "#to" ).datepicker( "option", "minDate", selectedDate );
-                    var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
-                    var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
-                    $(this).datepicker('setDate', new Date(year, month, 1));
+                onClose: function(dateText, inst) { 
+                  var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+                  var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+                  var date = new Date(year, month, 2);
+                  $(this).datepicker('setDate', date)
+                         .data('date', date); // remember the selected date
                 }
             });
             
-            $( "#to" ).datepicker({
-                //defaultDate: "+1w",
-                changeMonth: true,
-                changeYear: true,
-                showButtonPanel: true,
-                dateFormat: "yy-mm-dd",
-                onClose: function( selectedDate ) {
-                    //$( "#from" ).datepicker( "option", "maxDate", selectedDate );
-                    var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
-                    var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
-                    $(this).datepicker('setDate', new Date(year, month, 31));
-                }
-            });
-            
-            $( "#from" ).datepicker( "option", "dateFormat", "yy-mm-dd" );
-            $( "#to" ).datepicker( "option", "dateFormat", "yy-mm-dd" );
-            $( "#from" ).datepicker('setDate', "<?php echo $defaultFrom; ?>");
-            $( "#to" ).datepicker('setDate', "<?php echo $defaultTo; ?>");
- 
-            
+            $( "#from" ).datepicker("setDate", '<?= $defaultFrom ?>');
+            $( "#to" ).datepicker("setDate", '<?= $defaultTo ?>');
+
             $(".XLS").on("click", function(event){
                 event.preventDefault();
                 
