@@ -17,6 +17,6 @@
     $from = $_GET["from"];
     $to = $_GET["to"];
     
-    $KrizovatkaDenik = new KrizovatkaDenik($db, $from, $to, $categoryCode, $doc_types, $ccodes, $cat_prints);
+    $KrizovatkaDenik = new KrizovatkaDenik($db, $from, $to, $categoryCode, $doc_types, $ccodes, $cat_prints, $doc_collection);
     $KrizovatkaDenik->createFile();
     $KrizovatkaDenik->saveAsExcel();

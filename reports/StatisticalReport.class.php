@@ -62,13 +62,15 @@ class StatisticalReport implements StatisticalReportInterface
     
     protected $catPrints;
     
+    protected $docCollections;
+    
     /**
      * Constructor for initializing the class.
      *
      * @param $db
      * @return void
      */
-    public function __construct(PDO $db, $from, $to, $categoryCode, array $docTypes, array $ccodes, $catPrints)
+    public function __construct(PDO $db, $from, $to, $categoryCode, array $docTypes, array $ccodes, $catPrints, array $docCollections)
     {
         $this->db = $db;
         $this->from = $from;
@@ -76,6 +78,7 @@ class StatisticalReport implements StatisticalReportInterface
         $this->report = array();
         $this->categoryCode = $categoryCode;
         $this->docTypes = $docTypes;
+        $this->docCollections = $docCollections;
         $this->ccodes = $ccodes;
         $this->catPrints = $catPrints;
         
@@ -409,13 +412,13 @@ class StatisticalReport implements StatisticalReportInterface
       */
     public function getArray0107()
     {
-        $type = $this->docTypes["cartographicDocument"];
+        $type = $this->docCollections["cartographicDocuments"];
         
         try {
 
             $query = "SELECT count(`itype`) AS 'count' "
                     ."FROM `items` "
-                    ."WHERE `dateaccessioned` BETWEEN :from AND :to AND `itype` = '$type'";
+                    ."WHERE `dateaccessioned` BETWEEN :from AND :to AND `itype` IN ('".implode('\',\'', $type)."')";
 
             $stmt = $this->db->prepare($query);
             $stmt->bindValue(':from', $this->from, PDO::PARAM_STR);
@@ -440,13 +443,13 @@ class StatisticalReport implements StatisticalReportInterface
       */
     public function getArray0108()
     {
-        $type = $this->docTypes["printedMusic"];
+        $type = $this->docCollections["printedMusic"];
         
         try {
 
             $query = "SELECT count(`itype`) AS 'count' "
                     ."FROM `items` "
-                    ."WHERE `dateaccessioned` BETWEEN :from AND :to AND `itype` = '$type'";
+                    ."WHERE `dateaccessioned` BETWEEN :from AND :to AND `itype` IN ('".implode('\',\'', $type)."')";
 
             $stmt = $this->db->prepare($query);
             $stmt->bindValue(':from', $this->from, PDO::PARAM_STR);
@@ -471,13 +474,13 @@ class StatisticalReport implements StatisticalReportInterface
       */
     public function getArray0109()
     {
-        $type = $this->docTypes["audioDocument"];
+        $type = $this->docCollections["audioDocuments"];
         
         try {
 
             $query = "SELECT count(`itype`) AS 'count' "
                     ."FROM `items` "
-                    ."WHERE `dateaccessioned` BETWEEN :from AND :to AND `itype` = '$type'";
+                    ."WHERE `dateaccessioned` BETWEEN :from AND :to AND `itype` IN ('".implode('\',\'', $type)."')";
 
             $stmt = $this->db->prepare($query);
             $stmt->bindValue(':from', $this->from, PDO::PARAM_STR);
@@ -502,13 +505,13 @@ class StatisticalReport implements StatisticalReportInterface
       */
     public function getArray0110()
     {
-        $type = $this->docTypes["audioPictorialDocument"];
+        $type = $this->docCollections["audioVisualDocuments"];
         
         try {
 
             $query = "SELECT count(`itype`) AS 'count' "
                     ."FROM `items` "
-                    ."WHERE `dateaccessioned` BETWEEN :from AND :to AND `itype` = '$type'";
+                    ."WHERE `dateaccessioned` BETWEEN :from AND :to AND `itype` IN ('".implode('\',\'', $type)."')";
 
             $stmt = $this->db->prepare($query);
             $stmt->bindValue(':from', $this->from, PDO::PARAM_STR);
@@ -533,13 +536,13 @@ class StatisticalReport implements StatisticalReportInterface
       */
     public function getArray0111()
     {
-        $type = $this->docTypes["pictorialDocument"];
+        $type = $this->docCollections["visualDocuments"];
         
         try {
 
             $query = "SELECT count(`itype`) AS 'count' "
                     ."FROM `items` "
-                    ."WHERE `dateaccessioned` BETWEEN :from AND :to AND `itype` = '$type'";
+                    ."WHERE `dateaccessioned` BETWEEN :from AND :to AND `itype` IN ('".implode('\',\'', $type)."')";
 
             $stmt = $this->db->prepare($query);
             $stmt->bindValue(':from', $this->from, PDO::PARAM_STR);
@@ -564,13 +567,13 @@ class StatisticalReport implements StatisticalReportInterface
       */
     public function getArray0112()
     {
-        $type = $this->docTypes["electronicDocument"];
+        $type = $this->docCollections["electronicDocuments"];
         
         try {
 
             $query = "SELECT count(`itype`) AS 'count' "
                     ."FROM `items` "
-                    ."WHERE `dateaccessioned` BETWEEN :from AND :to AND `itype` = '$type'";
+                    ."WHERE `dateaccessioned` BETWEEN :from AND :to AND `itype` IN ('".implode('\',\'', $type)."')";
 
             $stmt = $this->db->prepare($query);
             $stmt->bindValue(':from', $this->from, PDO::PARAM_STR);
@@ -1070,7 +1073,7 @@ class StatisticalReport implements StatisticalReportInterface
     public function getArray0306()
     {
         
-        $type = $this->docTypes["periodics"];
+        $type = $this->docCollections["periodics"];
         
         try{
                 
@@ -1080,7 +1083,7 @@ class StatisticalReport implements StatisticalReportInterface
 		    ."ON `s`.`itemnumber` = `i`.`itemnumber` "
                     ."WHERE `s`.`datetime` BETWEEN :from AND :to "
                     ."  AND `s`.`type` IN ('issue','renew') "
-		    ."  AND `i`.`itype` IN ('$type')";
+		    ."  AND `i`.`itype` IN ('".implode('\',\'', $type)."')";
 
             $stmt = $this->db->prepare($query);
             $stmt->bindValue(':from', $this->from, PDO::PARAM_STR);
@@ -1176,7 +1179,7 @@ class StatisticalReport implements StatisticalReportInterface
       */
     public function getArray0309()
     {
-        $type = $this->docTypes["cartographicDocument"];
+        $type = $this->docCollections["cartographicDocuments"];
         
         try{
                 
@@ -1186,7 +1189,7 @@ class StatisticalReport implements StatisticalReportInterface
 		    ."ON `s`.`itemnumber` = `i`.`itemnumber` "
                     ."WHERE `s`.`datetime` BETWEEN :from AND :to "
                     ."  AND `s`.`type` IN ('issue','renew') "
-		    ."  AND `i`.`itype` IN ('$type')";
+		    ."  AND `i`.`itype` IN ('".implode('\',\'', $type)."')";
 
             $stmt = $this->db->prepare($query);
             $stmt->bindValue(':from', $this->from, PDO::PARAM_STR);
@@ -1211,7 +1214,7 @@ class StatisticalReport implements StatisticalReportInterface
       */
     public function getArray0310()
     {
-        $type = $this->docTypes["printedMusic"];
+        $type = $this->docCollections["printedMusic"];
         
         try{
                 
@@ -1221,7 +1224,7 @@ class StatisticalReport implements StatisticalReportInterface
 		    ."ON `s`.`itemnumber` = `i`.`itemnumber` "
                     ."WHERE `s`.`datetime` BETWEEN :from AND :to "
                     ."  AND `s`.`type` IN ('issue','renew') "
-		    ."  AND `i`.`itype` IN ('$type')";
+		    ."  AND `i`.`itype` IN ('".implode('\',\'', $type)."')";
 
             $stmt = $this->db->prepare($query);
             $stmt->bindValue(':from', $this->from, PDO::PARAM_STR);
@@ -1246,7 +1249,7 @@ class StatisticalReport implements StatisticalReportInterface
       */
     public function getArray0311()
     {
-        $type = $this->docTypes["audioDocument"];
+        $type = $this->docCollections["audioDocuments"];
         
         try{
                 
@@ -1256,7 +1259,7 @@ class StatisticalReport implements StatisticalReportInterface
 		    ."ON `s`.`itemnumber` = `i`.`itemnumber` "
                     ."WHERE `s`.`datetime` BETWEEN :from AND :to "
                     ."  AND `s`.`type` IN ('issue','renew') "
-		    ."  AND `i`.`itype` IN ('$type')";
+		    ."  AND `i`.`itype` IN ('".implode('\',\'', $type)."')";
 
             $stmt = $this->db->prepare($query);
             $stmt->bindValue(':from', $this->from, PDO::PARAM_STR);
@@ -1281,7 +1284,7 @@ class StatisticalReport implements StatisticalReportInterface
       */
     public function getArray0312() 
     {
-        $type = $this->docTypes["audioPictorialDocument"];
+        $type = $this->docCollections["audioVisualDocuments"];
         
         try{
                 
@@ -1291,7 +1294,7 @@ class StatisticalReport implements StatisticalReportInterface
 		    ."ON `s`.`itemnumber` = `i`.`itemnumber` "
                     ."WHERE `s`.`datetime` BETWEEN :from AND :to "
                     ."  AND `s`.`type` IN ('issue','renew') "
-		    ."  AND `i`.`itype` IN ('$type')";
+		    ."  AND `i`.`itype` IN ('".implode('\',\'', $type)."')";
 
             $stmt = $this->db->prepare($query);
             $stmt->bindValue(':from', $this->from, PDO::PARAM_STR);
@@ -1316,7 +1319,7 @@ class StatisticalReport implements StatisticalReportInterface
       */
     public function getArray0313()
     {
-        $type = $this->docTypes["pictorialDocument"];
+        $type = $this->docCollections["visualDocuments"];
         
         try{
                 
@@ -1326,7 +1329,7 @@ class StatisticalReport implements StatisticalReportInterface
 		    ."ON `s`.`itemnumber` = `i`.`itemnumber` "
                     ."WHERE `s`.`datetime` BETWEEN :from AND :to "
                     ."  AND `s`.`type` IN ('issue','renew') "
-		    ."  AND `i`.`itype` IN ('$type')";
+		    ."  AND `i`.`itype` IN ('".implode('\',\'', $type)."')";
 
             $stmt = $this->db->prepare($query);
             $stmt->bindValue(':from', $this->from, PDO::PARAM_STR);
@@ -1351,7 +1354,7 @@ class StatisticalReport implements StatisticalReportInterface
       */
     public function getArray0314()
     {
-        $type = $this->docTypes["electronicDocument"];
+        $type = $this->docCollections["electronicDocuments"];
         
         try{
                 
@@ -1361,7 +1364,7 @@ class StatisticalReport implements StatisticalReportInterface
 		    ."ON `s`.`itemnumber` = `i`.`itemnumber` "
                     ."WHERE `s`.`datetime` BETWEEN :from AND :to "
                     ."  AND `s`.`type` IN ('issue','renew') "
-		    ."  AND `i`.`itype` IN ('$type')";
+		    ."  AND `i`.`itype` IN ('".implode('\',\'', $type)."')";
 
             $stmt = $this->db->prepare($query);
             $stmt->bindValue(':from', $this->from, PDO::PARAM_STR);

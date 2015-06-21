@@ -34,21 +34,21 @@
         $langShortcut = "cs"; // "cs" | "en"
         
         /* Display errors */
-        displayErrors(true);
+        displayErrors(false);
         //displayErrors(false);
         
         /* Categories */
         #### accounttypes table ####
-        # A - Registrační poplatek
-        # F - Upomínka
+        # A - RegistraÄnÃ­ poplatek
+        # F - UpomÃ­nka
         # Res - Rezervace
         # rezer - Rezervace
         # tisk - Tisk
         # kopie - Kopie
         # K - 
         # L - Kopie
-        # N - Nová karta
-        # dovoz - Dovoz z Parníka
+        # N - NovÃ¡ karta
+        # dovoz - Dovoz z ParnÃ­ka
         # prode - Prodej ??? did not used
         #### accountlines table ####
 		# M
@@ -86,7 +86,7 @@
         $cat_registrations = array('A');
         $cat_fines = array('F', 'FO', 'FU');
         $cat_reservations = array('Res', 'rezer', 'rezervace');
-        $cat_prints = array('tisk', 'kopie', 'K', 'Copie', 'L');
+        $cat_prints = array('tisk', 'kopie', 'K', 'Copie');
         $cat_other = array('N',
                             'dovoz',
                             'MVS',
@@ -116,6 +116,7 @@
                             'Rent',
                             'M',
                             'FFOR',
+				'L',
             );
         
         $cat_allPayments = array_merge($cat_registrations, $cat_fines, $cat_reservations, $cat_prints, $cat_other);
@@ -126,15 +127,15 @@
         
         /* Define months of your country */
         $months = "'Led',
-                'Úno',
-                'Bře',
+                'Ãšno',
+                'BÅ™e',
                 'Dub',
-                'Kvě',
-                'Čer',
-                'Čvc',
+                'KvÄ›',
+                'ÄŒer',
+                'ÄŒvc',
                 'Srp',
-                'Zář',
-                'Říj',
+                'ZÃ¡Å™',
+                'Å˜Ã­j',
                 'Lis',
                 'Pro'";
         
@@ -152,6 +153,14 @@
         $doc_types["periodics"] = "PE";
         $doc_types["books"] = "KN";
         $doc_types["MVS"] = "MVS";
+        
+        $doc_collection["cartographicDocuments"] = array ($doc_types["cartographicDocument"]);
+        $doc_collection["printedMusic"] = array ($doc_types["printedMusic"]);
+        $doc_collection["audioDocuments"] = array ($doc_types["audioDocument"]);
+        $doc_collection["audioVisualDocuments"] = array ($doc_types["audioPictorialDocument"]);
+        $doc_collection["visualDocuments"] = array ($doc_types["pictorialDocument"]);
+        $doc_collection["electronicDocuments"] = array ($doc_types["electronicDocument"]);
+        $doc_collection["periodics"] = array ($doc_types["periodics"]);
         
         $ccodes["educational_adult_literature"] = "5";
         $ccodes["educational_children_literature"] = "7";

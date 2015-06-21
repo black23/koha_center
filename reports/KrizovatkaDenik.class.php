@@ -25,10 +25,10 @@ class KrizovatkaDenik extends StatisticalReport
      * @param array $docTypes
      * @param array $ccodes
      */
-    public function __construct(PDO $db, $from, $to, $categoryCode, array $docTypes, array $ccodes, array $catPrints)
+    public function __construct(PDO $db, $from, $to, $categoryCode, array $docTypes, array $ccodes, array $catPrints, array $docCollections)
     {
-        parent::__construct($db, $from, $to, $categoryCode, $docTypes, $ccodes, $catPrints);
-        $this->before = new StatisticalReport($db, substr($from, 0, 4)."-01-01", $from, $categoryCode, $docTypes, $ccodes, $catPrints);
+        parent::__construct($db, $from, $to, $categoryCode, $docTypes, $ccodes, $catPrints, $docCollections);
+        $this->before = new StatisticalReport($db, substr($from, 0, 4)."-01-01", $from, $categoryCode, $docTypes, $ccodes, $catPrints, $docCollections);
         $this->objPHPExcel = new PHPExcel();
     }
     
@@ -1056,7 +1056,7 @@ class KrizovatkaDenik extends StatisticalReport
     {
         try {
             
-            $type = $this->docTypes["periodics"];
+            $type = $this->docCollections["periodics"];
 
             $query = "SELECT count(`s`.`datetime`) AS 'count', DATE(`s`.`datetime`) AS `date` "
                     ."FROM `statistics` `s` "
@@ -1064,7 +1064,7 @@ class KrizovatkaDenik extends StatisticalReport
 		    ."ON `s`.`itemnumber` = `i`.`itemnumber` "
                     ."WHERE `s`.`datetime` BETWEEN :from AND :to "
                     ."  AND `s`.`type` IN ('issue','renew') "
-		    ."  AND `i`.`itype` IN ('$type') "
+		    ."  AND `i`.`itype` IN ('".implode('\',\'', $type)."') "
                     ."GROUP BY DATE(`s`.`datetime`)";
 
             $stmt = $this->db->prepare($query);
@@ -1088,7 +1088,7 @@ class KrizovatkaDenik extends StatisticalReport
     {
         try {
             
-            $type = $this->docTypes["cartographicDocument"];
+            $type = $this->docCollections["cartographicDocuments"];
 
             $query = "SELECT count(`s`.`datetime`) AS 'count', DATE(`s`.`datetime`) AS `date` "
                     ."FROM `statistics` `s` "
@@ -1096,7 +1096,7 @@ class KrizovatkaDenik extends StatisticalReport
 		    ."ON `s`.`itemnumber` = `i`.`itemnumber` "
                     ."WHERE `s`.`datetime` BETWEEN :from AND :to "
                     ."  AND `s`.`type` IN ('issue','renew') "
-		    ."  AND `i`.`itype` IN ('$type') "
+		    ."  AND `i`.`itype` IN ('".implode('\',\'', $type)."') "
                     ."GROUP BY DATE(`s`.`datetime`)";
 
             $stmt = $this->db->prepare($query);
@@ -1120,7 +1120,7 @@ class KrizovatkaDenik extends StatisticalReport
     {
         try {
 
-            $type = $this->docTypes["printedMusic"];
+            $type = $this->docCollections["printedMusic"];
             
             $query = "SELECT count(`s`.`datetime`) AS 'count', DATE(`s`.`datetime`) AS `date` "
                     ."FROM `statistics` `s` "
@@ -1128,7 +1128,7 @@ class KrizovatkaDenik extends StatisticalReport
 		    ."ON `s`.`itemnumber` = `i`.`itemnumber` "
                     ."WHERE `s`.`datetime` BETWEEN :from AND :to "
                     ."  AND `s`.`type` IN ('issue','renew') "
-		    ."  AND `i`.`itype` IN ('$type') "
+		    ."  AND `i`.`itype` IN ('".implode('\',\'', $type)."') "
                     ."GROUP BY DATE(`s`.`datetime`)";
 
             $stmt = $this->db->prepare($query);
@@ -1152,7 +1152,7 @@ class KrizovatkaDenik extends StatisticalReport
     {
         try {
 
-            $type = $this->docTypes["audioDocument"];
+            $type = $this->docCollections["audioDocuments"];
             
             $query = "SELECT count(`s`.`datetime`) AS 'count', DATE(`s`.`datetime`) AS `date` "
                     ."FROM `statistics` `s` "
@@ -1160,7 +1160,7 @@ class KrizovatkaDenik extends StatisticalReport
 		    ."ON `s`.`itemnumber` = `i`.`itemnumber` "
                     ."WHERE `s`.`datetime` BETWEEN :from AND :to "
                     ."  AND `s`.`type` IN ('issue','renew') "
-		    ."  AND `i`.`itype` IN ('$type') "
+		    ."  AND `i`.`itype` IN ('".implode('\',\'', $type)."') "
                     ."GROUP BY DATE(`s`.`datetime`)";
 
             $stmt = $this->db->prepare($query);
@@ -1184,7 +1184,7 @@ class KrizovatkaDenik extends StatisticalReport
     {
         try {
 
-            $type = $this->docTypes["audioPictorialDocument"];
+            $type = $this->docCollections["audioVisualDocuments"];
             
             $query = "SELECT count(`s`.`datetime`) AS 'count', DATE(`s`.`datetime`) AS `date` "
                     ."FROM `statistics` `s` "
@@ -1192,7 +1192,7 @@ class KrizovatkaDenik extends StatisticalReport
 		    ."ON `s`.`itemnumber` = `i`.`itemnumber` "
                     ."WHERE `s`.`datetime` BETWEEN :from AND :to "
                     ."  AND `s`.`type` IN ('issue','renew') "
-		    ."  AND `i`.`itype` IN ('$type') "
+		    ."  AND `i`.`itype` IN ('".implode('\',\'', $type)."') "
                     ."GROUP BY DATE(`s`.`datetime`)";
 
             $stmt = $this->db->prepare($query);
@@ -1216,7 +1216,7 @@ class KrizovatkaDenik extends StatisticalReport
     {
         try {
 
-            $type = $this->docTypes["pictorialDocument"];
+            $type = $this->docCollections["visualDocuments"];
             
             $query = "SELECT count(`s`.`datetime`) AS 'count', DATE(`s`.`datetime`) AS `date` "
                     ."FROM `statistics` `s` "
@@ -1224,7 +1224,7 @@ class KrizovatkaDenik extends StatisticalReport
 		    ."ON `s`.`itemnumber` = `i`.`itemnumber` "
                     ."WHERE `s`.`datetime` BETWEEN :from AND :to "
                     ."  AND `s`.`type` IN ('issue','renew') "
-		    ."  AND `i`.`itype` IN ('$type') "
+		    ."  AND `i`.`itype` IN ('".implode('\',\'', $type)."') "
                     ."GROUP BY DATE(`s`.`datetime`)";
 
             $stmt = $this->db->prepare($query);
@@ -1248,7 +1248,7 @@ class KrizovatkaDenik extends StatisticalReport
     {
         try {
 
-            $type = $this->docTypes["electronicDocument"];
+            $type = $this->docCollections["electronicDocuments"];
             
             $query = "SELECT count(`s`.`datetime`) AS 'count', DATE(`s`.`datetime`) AS `date` "
                     ."FROM `statistics` `s` "
@@ -1256,7 +1256,7 @@ class KrizovatkaDenik extends StatisticalReport
 		    ."ON `s`.`itemnumber` = `i`.`itemnumber` "
                     ."WHERE `s`.`datetime` BETWEEN :from AND :to "
                     ."  AND `s`.`type` IN ('issue','renew') "
-		    ."  AND `i`.`itype` IN ('$type') "
+		    ."  AND `i`.`itype` IN ('".implode('\',\'', $type)."') "
                     ."GROUP BY DATE(`s`.`datetime`)";
 
             $stmt = $this->db->prepare($query);
