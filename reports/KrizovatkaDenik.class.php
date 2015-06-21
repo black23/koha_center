@@ -1280,7 +1280,7 @@ class KrizovatkaDenik extends StatisticalReport
     {
         try {
 
-            $types = $this->docTypes;
+            $types = $this->doc_collection["otherDocuments"];
             
             $query = "SELECT count(`s`.`datetime`) AS 'count', DATE(`s`.`datetime`) AS `date` "
                     ."FROM `statistics` `s` "

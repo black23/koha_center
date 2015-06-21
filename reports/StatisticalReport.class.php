@@ -598,7 +598,7 @@ class StatisticalReport implements StatisticalReportInterface
       */
     public function getArray0113()
     {
-        $types = $this->docTypes;
+        $types = $this->doc_collection["otherDocuments"];;
         
         try {
 
@@ -1389,7 +1389,7 @@ class StatisticalReport implements StatisticalReportInterface
       */
     public function getArray0315()
     {
-        $types = $this->docTypes;
+        $types = $this->doc_collection["otherDocuments"];
         
         try{
                 

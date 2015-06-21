@@ -161,6 +161,7 @@
         $doc_collection["visualDocuments"] = array ($doc_types["pictorialDocument"]);
         $doc_collection["electronicDocuments"] = array ($doc_types["electronicDocument"]);
         $doc_collection["periodics"] = array ($doc_types["periodics"]);
+        $doc_collection["otherDocuments"] = array ();
         
         $ccodes["educational_adult_literature"] = "5";
         $ccodes["educational_children_literature"] = "7";
