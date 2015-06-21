@@ -746,6 +746,8 @@ class KrizovatkaDenik extends StatisticalReport
            $data[$val['date']]['slTisk'] = $val['count'];
         }
         
+        ksort($data);
+        
         /**/
         
         $this->sheet1($data);
