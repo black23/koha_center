@@ -598,13 +598,13 @@ class StatisticalReport implements StatisticalReportInterface
       */
     public function getArray0113()
     {
-        $types = $this->doc_collection["otherDocuments"];;
+        $types = $this->docCollections["otherDocuments"];;
         
         try {
 
             $query = "SELECT count(`itype`) AS 'count' "
                     ."FROM `items` "
-                    ."WHERE `dateaccessioned` BETWEEN :from AND :to AND `itype` NOT IN ('".implode('\',\'', $types)."')";
+                    ."WHERE `dateaccessioned` BETWEEN :from AND :to AND `itype` IN ('".implode('\',\'', $types)."')";
 
             $stmt = $this->db->prepare($query);
             $stmt->bindValue(':from', $this->from, PDO::PARAM_STR);
@@ -1389,7 +1389,7 @@ class StatisticalReport implements StatisticalReportInterface
       */
     public function getArray0315()
     {
-        $types = $this->doc_collection["otherDocuments"];
+        $types = $this->docCollections["otherDocuments"];
         
         try{
                 
@@ -1399,7 +1399,7 @@ class StatisticalReport implements StatisticalReportInterface
 		    ."ON `s`.`itemnumber` = `i`.`itemnumber` "
                     ."WHERE `s`.`datetime` BETWEEN :from AND :to "
                     ."  AND `s`.`type` IN ('issue','renew') "
-		    ."  AND `i`.`itype` NOT IN ('".implode('\',\'', $types)."')";
+		    ."  AND `i`.`itype` IN ('".implode('\',\'', $types)."')";
 
             $stmt = $this->db->prepare($query);
             $stmt->bindValue(':from', $this->from, PDO::PARAM_STR);

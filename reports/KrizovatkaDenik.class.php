@@ -1280,7 +1280,7 @@ class KrizovatkaDenik extends StatisticalReport
     {
         try {
 
-            $types = $this->doc_collection["otherDocuments"];
+            $types = $this->docCollections["otherDocuments"];
             
             $query = "SELECT count(`s`.`datetime`) AS 'count', DATE(`s`.`datetime`) AS `date` "
                     ."FROM `statistics` `s` "
@@ -1288,7 +1288,7 @@ class KrizovatkaDenik extends StatisticalReport
 		    ."ON `s`.`itemnumber` = `i`.`itemnumber` "
                     ."WHERE `s`.`datetime` BETWEEN :from AND :to "
                     ."  AND `s`.`type` IN ('issue','renew') "
-		    ."  AND `i`.`itype` NOT IN ('".implode('\',\'', $types)."') "
+		    ."  AND `i`.`itype` IN ('".implode('\',\'', $types)."') "
                     ."GROUP BY DATE(`s`.`datetime`)";
 
             $stmt = $this->db->prepare($query);
