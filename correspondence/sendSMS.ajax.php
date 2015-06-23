@@ -139,7 +139,7 @@
         if(($count % 3) != 0){
             $result = [
                 "status" => "error",
-                "message" => "Unexpected char or string in receivers",
+                "message" => "Prosim, zkontrolujte ze, prijemci jsou ve formatu \"Jmeno Prijmeni Cislo\" a NE treba \"Jmeno jmeno prijmeni cislo\".",
             ];
         }
     }
