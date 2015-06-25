@@ -30,7 +30,7 @@
 		
 		$db->beginTransaction();
         
-        $query = "SELECT `a`.`timestamp`, `b`.`borrowernumber`, `b`.`firstname`, `b`.`surname`, round(Sum(ABS(`s`.`value`)),0) as `value` "
+        $query = "SELECT `a`.`timestamp`, `b`.`borrowernumber`, `b`.`firstname`, `b`.`surname`, round(Sum(ABS(`s`.`value`)),0) as `value`, `a`.`accounttype` "
 				."FROM `statistics` `s` "
                 ."JOIN `accountlines` `a` "
                 ."ON `a`.`accountlines_id` = `s`.`other` "
