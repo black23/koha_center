@@ -21,9 +21,9 @@ var DEFAULT_SETTINGS = {
     jsonContainer: null,
 
 	// Display settings
-    hintText: "Type in a search term",
-    noResultsText: "No results",
-    searchingText: "Searching...",
+    hintText: "Zadejte jméno nebo číslo",
+    noResultsText: "Žádné výsledky",
+    searchingText: "Hledám...",
     deleteText: "&times;",
     animateDropdown: true,
 
