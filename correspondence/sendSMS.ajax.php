@@ -121,71 +121,37 @@
     $timeArray = preg_split('/\s+/', trim($time));
     $time = $timeArray[2].$timeArray[1].$timeArray[0]."T".$timeArray[3];
     
-    
-    
-    $receivers = str_replace("@", "", $receivers);
-    $receivers = str_replace("&64;", "", $receivers);
-    $receivers = str_replace("(", "", $receivers);
-    $receivers = str_replace(")", "", $receivers);
-    $receivers = str_replace("-", "", $receivers);
-    $receivers = str_replace(",", "", $receivers);
-    
-    $data   = preg_split('/\s+/', trim($receivers));
-    
-    $data = array_chunk($data, 3);
-    
-    foreach($data AS $key => $val){
-        $count = count($val);
-        if(($count % 3) != 0){
+    $data   = preg_split("/[,]+/", trim($receivers));
+
+    if(count($data) > 1){
+        $res = $Sms->sendMultipleMessages($data, $message, $time, $deliveryReport);
+        if($res != 0){
+            $errorMessage = "$text->sms_error_occured: ";
+            foreach($res AS $key => $val){
+                $errNo = "sms_error_".$val['err'];
+                $errorMessage .= $val['phone']." - error ".$text->$errNo.", ";
+            }
+            $errorMessage .= "'";
+
             $result = [
                 "status" => "error",
-                "message" => "Prosim, zkontrolujte ze, prijemci jsou ve formatu \"Jmeno Prijmeni Cislo\" a NE treba \"Jmeno jmeno prijmeni cislo\".",
+                "message" => "$errorMessage",
             ];
-        }
-    }
-    
-    if(isset($result) AND ($result['status'] == 'error')){
-        echo json_encode($result);
-        return false;
-    }
-    else{
-        /* Just for debug */
-        //print_r($data);
-        //print_r($message);
-        //print_r($deliveryReport);
-        /////////////////////////////////////
 
-
-        if(count($data) > 1){
-            $res = $Sms->sendMultipleMessages($data, $message, $time, $deliveryReport);
-            if($res != 0){
-                $errorMessage = "$text->sms_error_occured: ";
-                foreach($res AS $key => $val){
-                    $errNo = "sms_error_".$val['err'];
-                    $errorMessage .= $val['phone']." - error ".$text->$errNo.", ";
-                }
-                $errorMessage .= "'";
-                
-                $result = [
-                    "status" => "error",
-                    "message" => "$errorMessage",
-                ];
-                
-                if(isset($result) AND ($result['status'] == 'error')){
-                    echo json_encode($result);
-                    return false;
-                }
-    
+            if(isset($result) AND ($result['status'] == 'error')){
+                echo json_encode($result);
+                return false;
             }
+
         }
-        else{ // count($data) == 1
-            $Sms->sendMessage($data[0]['2'], $message, $time, "", $deliveryReport);
-        }
-        
-        $result = [
-            "status" => "ok",
-            "message" => "ok",
-        ];
-        echo json_encode($result);
     }
+    else{ // count($data) == 1
+        $Sms->sendMessage($data[0], $message, $time, "", $deliveryReport);
+    }
+
+    $result = [
+        "status" => "ok",
+        "message" => "ok",
+    ];
+    echo json_encode($result);
 	

@@ -293,7 +293,7 @@ class Sms{
         $sms->Create($this->username, $this->password, CSMSConnect::AUTH_HASH);
 
         foreach($receivers AS $key => $val){
-            $sms->Add_SMS($val[2], $message, $time, "", $deliveryReport);
+            $sms->Add_SMS($val, $message, $time, "", $deliveryReport);
         }
         
         $XMLResponse = $sms->SendAllSMS();
@@ -550,6 +550,47 @@ class Sms{
             $array[$phone] = array('firstname'=>$val['firstname'], 'surname'=>$val['surname']);
         }
         
+        return $array;
+        
+    }
+    
+    public function getBorrowerAsArray($p_string)
+    {
+        try {
+		
+            //$this->db->beginTransaction();
+
+            $query = "SELECT COALESCE(`firstname`, 'NoName') AS `firstname`, COALESCE(`surname`, 'NoSurname') AS `surname`, COALESCE(NULLIF(`smsalertnumber`,''), NULLIF(`phone`,''), NULLIF(`phonepro`,'')) AS `phone` "
+                    ."FROM `borrowers` "
+                    ."WHERE ((`smsalertnumber` IS NOT NULL AND `smsalertnumber` != '') OR (`phone` IS NOT NULL AND `phone` != '') OR (`phonepro` IS NOT NULL AND `phonepro` != '') ) AND ( (`firstname` LIKE :p_string) OR (`surname` LIKE :p_string) OR (`phone` LIKE :p_string) OR (`phonepro` LIKE :p_string) OR (`smsalertnumber` LIKE :p_string) ) "
+                    ."LIMIT 10";
+			
+            $stmt = $this->db->prepare($query);
+            $stmt->execute(array(':p_string'=> '%'.$p_string.'%'));
+
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	 
+            //$this->db->commit();
+                		
+	} catch(PDOException $ex) {
+		
+            Debugger::Log($ex->getMessage());
+		
+	}
+
+        $array = array();
+        $i = 0;
+        foreach($results as $val){
+            $i++;
+            $phone = str_replace(" ", "", $val['phone']);
+            $phone = str_replace("-", "", $phone);
+            $phone = str_replace("(", "", $phone);
+            $phone = str_replace(")", "", $phone);
+            
+            $phone = substr($phone, -9);
+            array_push($array, array('id'=>$phone, 'name'=>$val['firstname'].' '.$val['surname'].' '.$phone));
+        }
+
         return $array;
         
     }

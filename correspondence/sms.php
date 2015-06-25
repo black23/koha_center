@@ -63,6 +63,8 @@
         <link href="../css/jquery.atwho.css" rel="stylesheet">
          <link href="../css/bootstrap-switch.css" rel="stylesheet">
         <link href="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/v4.0.0/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
+        
+        <link rel="stylesheet" type="text/css" href="../css/token-input.css" />
 
     </head>
 
@@ -104,7 +106,7 @@
                             <form>
                               <div class="form-group">
                                 <label for="receiver" class="control-label"><?= $text->receiver ?></label>
-                                <textarea class="form-control receivers" id="receivers"></textarea>
+                                <textarea class="form-control" id="my-text-input"></textarea>
                               </div>
                               
                               <div class="form-group">
@@ -444,7 +446,12 @@
     <script src="../js/jquery.atwho.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
     <script src="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/v4.0.0/src/js/bootstrap-datetimepicker.js"></script>
-    
+    <script type="text/javascript" src="../js/jquery.tokeninput.js"></script>
+        <script type="text/javascript">
+        $(document).ready(function () {
+            $("#my-text-input").tokenInput("getUser.php");
+        });
+        </script>
     <script>
         $( document ).ready(function() {
             
@@ -589,7 +596,7 @@
                 event.preventDefault();
                 
                 var len = $("#message").val().length;
-                var receiversLen = $("#receivers").val().length;
+                var receiversLen = $("#my-text-input").val().length;
                 var message = $("#message").val();
                 var time = $("#time").val();
                 var deliveryReport = 0;
@@ -597,7 +604,7 @@
                     deliveryReport = 1;
                 }
 
-                var receivers = $("#receivers").val();
+                var receivers = $("#my-text-input").val();
                 
                 
                 
