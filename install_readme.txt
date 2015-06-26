@@ -8,6 +8,7 @@ system/config.php
 3. Define root in system/config.php if nessessary
 
 4. Make /log directory writable
+and news/output.txt set to 755
 
 5. Create DB tables
 CREATE TABLE `cen_smshistory` (

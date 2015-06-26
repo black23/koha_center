@@ -122,6 +122,7 @@
                     <div class="panel-body">
                         <p>
                             <a href="news/news.php" title="<?php echo $text->news_in_pdf; ?>"><?php echo $text->news_in_pdf; ?></a><br>
+                            <a href="news/ARI.php" title="ARI">ARI</a><br>
                         </p>
                     </div>
                 </div>
