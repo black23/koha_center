@@ -25,6 +25,9 @@
 	require_once "../system/config.php";
         
         use Tracy\Debugger;
+        
+        Debugger::enable(Debugger::DEVELOPMENT, __DIR__ . '/../log');
+        Debugger::$strictMode = TRUE;
 	
 ?>
 <!DOCTYPE html>
@@ -40,9 +43,9 @@
 
             $lastDayInActualMonth = cal_days_in_month(CAL_GREGORIAN, date("m"), date("Y")); 
             $defaultTo = date("Y-m-").$lastDayInActualMonth;
-            
         ?>
         <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+        <link rel="stylesheet" type="text/css" href="../css/token-input.css" />
         <style>
             .multiselect-container{position:absolute;list-style-type:none;margin:0;padding:0}
             .multiselect-container .input-group{margin:5px}.multiselect-container>li{padding:0}
@@ -55,6 +58,10 @@
             .btn-group>.btn-group:nth-child(2)>.multiselect.btn{border-top-left-radius:4px;border-bottom-left-radius:4px}
             .form-inline .multiselect-container label.checkbox,.form-inline .multiselect-container label.radio{padding:3px 20px 3px 40px}
             .form-inline .multiselect-container li a label.checkbox input[type=checkbox],.form-inline .multiselect-container li a label.radio input[type=radio]{margin-left:-20px;margin-right:0}
+            
+            .add-term-input-link{
+                cursor: pointer;
+            }
         </style>
     </head>
 
@@ -81,7 +88,25 @@
                         <div class="panel-body ">
                             <form>
                                 <div class='row'>
-                                    <div class='col-md-4'>
+                                    <div class='col-lg-4'>
+                                          <div class="form-group">
+                                            <label class="control-label">Term</label>
+                                            <div class='input-group'>
+                                                <textarea id="term" class="form-control term"></textarea>
+                                            </div>
+                                            <!--<div class='input-group boolean-selection'>
+                                                <select id="boolean-selection">
+                                                    <option value='AND'>AND</option>
+                                                    <option value='AND'>OR</option>
+                                                    <option value='AND'>NOT</option>
+                                                </select>
+                                            </div>-->
+                                          </div>
+                                          <!--<div class="form-group" id='add-term-input'>
+                                              <span class='add-term-input-link'>Přidat další</span>
+                                          </div>-->
+                                    </div>
+                                    <div class='col-lg-2'>
                                           <div class="form-group" id="timeDiv">
                                             <label for="time" class="control-label"><?= $text->from_date ?></label>
                                             <div class='input-group date' id='datetimepicker1'>
@@ -96,7 +121,7 @@
                                           </div>
                                     </div>
 
-                                    <div class='col-md-4'>
+                                    <div class='col-lg-3'>
                                          <div class="form-group">
                                             <label for="time" class="control-label"><?= $text->departments ?></label>
                                             <div class='input-group date'>
@@ -125,9 +150,27 @@
                                                 </select>
                                             </div>
                                         </div>
+                                        
+                                        <div class="form-group">
+                                            <label for="time" class="control-label">Prohledávat</label>
+                                            <div>
+                                                <select class="marc-arrays" multiple="multiple">
+                                                    <?php
+                                                    $marcArrays = array(600,610, 611, 630, 648, 650, 651,655);
+                                                    foreach($marcArrays AS $val){
+                                                        if ($val === 650) {
+                                                            echo "<option value='".$val."' selected>&nbsp;".$val."&nbsp;</option>";
+                                                        } else {
+                                                            echo "<option value='".$val."'>&nbsp;".$val."&nbsp;</option>";
+                                                        }
+                                                    }
+                                                    ?>
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
                                     
-                                    <div class='col-md-4'>
+                                    <div class='col-lg-3'>
                                         
                                          <div class="form-group" id="timeDiv">
                                             <label for="time" class="control-label">ARI číslo</label>
@@ -153,7 +196,7 @@
                                 </div>
                               
                                 <div>
-                                    <button class="btn btn-primary rightButton generatePDF"><?= $text->news_in_pdf ?></button>
+                                    <button class="btn btn-primary rightButton generatePDF">Generovat DOC</button>
                                 </div>
                                 
                             </form>
@@ -190,10 +233,15 @@
         }
     ?>
     <script type="text/javascript" src="../js/bootstrap-multiselect.js"></script>
+    <script type="text/javascript" src="../js/jquery.tokeninput.js"></script>
     <script>
         $( document ).ready(function() {
             
-            $('.branches, .types').multiselect();
+            $(".term").tokenInput("getTerm.php");
+            
+            $('.branches, .types, .marc-arrays').multiselect({
+                numberDisplayed: 1
+            });
 
             $( "#from" ).datepicker({
      // defaultDate: "-1w",
@@ -237,12 +285,19 @@
                 });
                 types = types.substring(1);
                 
+                var marcArrays = "";
+                $(".marc-arrays option:checked").each(function(){
+                    branches += ","+"'"+$(this).val()+"'";
+                });
+                marcArrays = marcArrays.substring(1);
+                
                 if( (branches.length < 1) || (types.length < 1) ){
                     alert("Enter branches and types");
                 }
                 else{
-                    console.log("Sending from: "+from+", to: "+to+", branches="+branches+"types: "+types+"&ariNumber="+ariNumber+"&zadatel="+zadatel+"&zpracovatel="+zpracovatel);
-                    window.open('generateARIOutput.ajax.php?from='+from+'&to='+to+"&branches="+branches+"&types="+types+"&ariNumber="+ariNumber+"&zadatel="+zadatel+"&zpracovatel="+zpracovatel);
+                    var terms = $("#term").val();
+                    console.log("Sending from: "+from+", to: "+to+", branches="+branches+"types: "+types+"&ariNumber="+ariNumber+"&zadatel="+zadatel+"&zpracovatel="+zpracovatel+"&marcArrays="+marcArrays+"&terms="+terms);
+                    window.open('generateARIOutput.ajax.php?from='+from+'&to='+to+"&branches="+branches+"&types="+types+"&ariNumber="+ariNumber+"&zadatel="+zadatel+"&zpracovatel="+zpracovatel+"&marcArrays="+marcArrays+"&terms="+terms);
                 }
                     
             });

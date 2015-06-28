@@ -18,7 +18,7 @@
 	
     session_start();
     
-    header('Content-type: text/plain;charset=UTF-8');
+    header('Content-type: text/html;charset=UTF-8');
 
 	require_once "../system/config.php";
 	
@@ -29,6 +29,8 @@
         $ariNumber = $_GET["ariNumber"];
         $zadatel = $_GET["zadatel"];
         $zpracovatel = $_GET["zpracovatel"];
+        $terms = $_GET["terms"];
+        $marcArrays = $_GET["marcArrays"];
         
         function tokenTruncate($string, $your_desired_width) {
         $parts = preg_split('/([\s\n\r]+)/', $string, null, PREG_SPLIT_DELIM_CAPTURE);
@@ -50,13 +52,24 @@ $query = <<<EOT
 SELECT `biblio`.`author`,
        `biblio`.`title`,
        ExtractValue(`biblioitems`.`marcxml`,'//datafield[@tag="520"]/subfield[@code="a"]') AS `annotation`,
-       ExtractValue(`biblioitems`.`marcxml`,'//datafield[@tag="245"]/subfield[@code="b"]') AS `subtitle` 
+       ExtractValue(`biblioitems`.`marcxml`,'//datafield[@tag="245"]/subfield[@code="b"]') AS `subtitle`,
+       ExtractValue(`biblioitems`.`marcxml`,'//datafield[@tag="300"]/subfield[@code="a"]') AS `range`,
+        ExtractValue(`biblioitems`.`marcxml`,'//datafield[@tag="260"]/subfield[@code="a"]') AS `nakladatel`,
+        ExtractValue(`biblioitems`.`marcxml`,'//datafield[@tag="260"]/subfield[@code="b"]') AS `mistoVydani`,
+        ExtractValue(`biblioitems`.`marcxml`,'//datafield[@tag="260"]/subfield[@code="c"]') AS `rokVydani`,
+       ExtractValue(`biblioitems`.`marcxml`,'//datafield[@tag="020"]') AS `isbn`,
+       ExtractValue(`biblioitems`.`marcxml`,'//datafield[@tag="952"]/subfield[@code="o"]') AS `signature`,
+       ExtractValue(`biblioitems`.`marcxml`,'//datafield[@tag="506"]/subfield[@code="a"]') AS `availability`
 FROM `items` 
 LEFT JOIN `biblioitems` 
 ON `items`.`biblioitemnumber` = `biblioitems`.`biblioitemnumber` 
 LEFT JOIN `biblio` 
 ON `biblioitems`.`biblionumber` = `biblio`.`biblionumber` 
-WHERE DATE(`items`.`dateaccessioned`) BETWEEN '$from' AND '$to' 
+WHERE DATE(`items`.`dateaccessioned`) BETWEEN '$from' AND '$to'
+EOT;
+
+$query .= <<<EOT
+
 AND `items`.`itype` IN ($types) 
 AND `items`.`homebranch` IN ($branches)
 GROUP BY `biblio`.`title`
@@ -84,12 +97,12 @@ EOT;
         $count = count($results);
         
 $html = "
-ARI č.:             $ariNumber               	
-Název:              Toxikomanie, drogy, alkohol      	
-Počet záznamů:      $count
-Žadatel:            $zadatel
-Zpracovatel:        $zpracovatel
-Zpracováno:         ".date("d. m. Y", strtotime(date("Y-m-d")))."  	
+<b>ARI č.</b>:             \t\t\t<b>$ariNumber</b><br>\n               	
+<b>Název</b>:              \t\t\t<b>".str_replace(',', ' ', $terms)."</b><br>\n  	
+<b>Počet záznamů</b>:      \t\t\t<b>$count</b><br>\n
+<b>Žadatel</b>:            \t\t\t<b>$zadatel</b><br>\n
+<b>Zpracovatel</b>:        \t\t\t$zpracovatel<br>\n
+<b>Zpracováno</b>:         \t\t\t<b>".date("d. m. Y", strtotime(date("Y-m-d")))."</b><br>\n	
         ";
 
         foreach($results as $key => $val){
@@ -117,13 +130,16 @@ Zpracováno:         ".date("d. m. Y", strtotime(date("Y-m-d")))."
             }
             
         $html .= ""
-                ."".$val['title']." ".$val['subtitle']."$authorPart"."\n"
-                . "\n"
-                ."$annotationPart"
+                ."".$val['title']." ".$val['subtitle']."$authorPart"."<br>\n"
+                ."Jazyk: <br>\n"
+                ."In: <br>\n"
+                ."$annotationPart<br>\n"
+                ."Dostupnost: $availability<br>\n"
             ."";
         }
-              echo $html;      
-
+              
+        echo $html;  
+/*
        file_put_contents('output.txt', "\xEF\xBB\xBF".$html);
        
-       header("Location: output.txt");
+       header("Location: output.txt");*/
