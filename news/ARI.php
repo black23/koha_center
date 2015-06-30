@@ -131,7 +131,7 @@
                                                         $databaseHandler = new DatabaseHandler($db);
                                                         $branches = $databaseHandler->getBranches();
                                                         foreach ($branches as $arr) {
-                                                            echo "<option value=\"".$arr['branchcode']."\">".$arr['branchname']."</option>\n";
+                                                            echo "<option value=\"".$arr['branchcode']."\" selected>".$arr['branchname']."</option>\n";
 							}
                                                     ?>
                                                 </select>
@@ -144,7 +144,7 @@
                                                 <select class="types" multiple="multiple">
                                                     <?php
                                                     foreach($doc_types AS $key => $val){
-                                                        echo "<option value='".$val."'>".$text->$key."</option>";
+                                                        echo "<option value='".$val."' selected>".$text->$key."</option>";
                                                     }
                                                     ?>
                                                 </select>
@@ -156,13 +156,9 @@
                                             <div>
                                                 <select class="marc-arrays" multiple="multiple">
                                                     <?php
-                                                    $marcArrays = array(600,610, 611, 630, 648, 650, 651,655);
+                                                    $marcArrays = array(600,610, 611, 630, 648, 650, 651, 653, 655);
                                                     foreach($marcArrays AS $val){
-                                                        if ($val === 650) {
                                                             echo "<option value='".$val."' selected>&nbsp;".$val."&nbsp;</option>";
-                                                        } else {
-                                                            echo "<option value='".$val."'>&nbsp;".$val."&nbsp;</option>";
-                                                        }
                                                     }
                                                     ?>
                                                 </select>
@@ -287,7 +283,7 @@
                 
                 var marcArrays = "";
                 $(".marc-arrays option:checked").each(function(){
-                    branches += ","+"'"+$(this).val()+"'";
+                    marcArrays += ","+"'"+$(this).val()+"'";
                 });
                 marcArrays = marcArrays.substring(1);
                 
