@@ -49,3 +49,8 @@ CHANGE `borrowernumber` `internet` int(11) NOT NULL AFTER `circulation_id`,
 CHANGE `target` `study_room` int NOT NULL AFTER `internet`,
 COMMENT=''
 REMOVE PARTITIONING;
+
+ALTER TABLE `cen_smshistory`
+ADD `receiver_id` int(11) NULL AFTER `solver_id`,
+COMMENT=''
+REMOVE PARTITIONING;
