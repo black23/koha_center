@@ -60,7 +60,7 @@ EOT;
             array_push($termList, array('id' => 'OR', 'name' => 'OR'));
         
         if (in_array(strtoupper($_GET['q']), array('N', 'NO', 'NOT')))
-            array_push($termList, array('id' => 'NOT', 'name' => 'NOT'));
+            array_push($termList, array('id' => 'AND NOT', 'name' => 'AND NOT'));
         
         
         foreach ($array as $key => $value) {
