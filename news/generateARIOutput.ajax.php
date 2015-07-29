@@ -24,11 +24,11 @@
         
 	$from = $_GET["from"];
         $to = $_GET["to"];
-        $branches = $_GET["branches"];
-        $types = $_GET["types"];
-        $ariNumber = $_GET["ariNumber"] ?: '';
-        $zadatel = $_GET["zadatel"] ?: '';
-        $zpracovatel = $_GET["zpracovatel"] ?: '';
+		$branches = $_GET["branches"];
+		$types = $_GET["types"];
+        $ariNumber = isset($_GET["ariNumber"]) ? $_GET['ariNumber'] : '';
+        $zadatel = isset($_GET["zadatel"]) ? $_GET['zadatel'] : '';
+        $zpracovatel = isset($_GET["zpracovatel"]) ? $_GET['zpracovatel'] : '';
         $terms = $_GET["terms"];
         $marcArrays = $_GET["marcArrays"];
         
@@ -51,6 +51,7 @@
 $query = <<<EOT
 SELECT `biblio`.`author`,
        `biblio`.`title`,
+	`biblio`.`biblionumber`,
        ExtractValue(`biblioitems`.`marcxml`,'//datafield[@tag="520"]/subfield[@code="a"]') AS `annotation`,
        ExtractValue(`biblioitems`.`marcxml`,'//datafield[@tag="245"]/subfield[@code="b"]') AS `subtitle`,
        ExtractValue(`biblioitems`.`marcxml`,'//datafield[@tag="300"]/subfield[@code="a"]') AS `range`,
@@ -78,7 +79,6 @@ SELECT `biblio`.`author`,
         ExtractValue(`biblioitems`.`marcxml`,'//datafield[@tag="773"]/subfield[@code="t"]') AS `zdrojPart3`,
         ExtractValue(`biblioitems`.`marcxml`,'//datafield[@tag="773"]/subfield[@code="x"]') AS `zdrojPart4`,
        ExtractValue(`biblioitems`.`marcxml`,'//datafield[@tag="506"]/subfield[@code="a"]') AS `availability`
-
 FROM `items` 
 LEFT JOIN `biblioitems` 
 ON `items`.`biblioitemnumber` = `biblioitems`.`biblioitemnumber` 
@@ -107,11 +107,11 @@ foreach ($terms as $term) {
             $marcArray = str_replace("'", "", trim($marcArray));
             if ($j === ($countMarcArrays)) {
                 $query .= <<<EOT
-                    ExtractValue(`biblioitems`.`marcxml`,'//datafield[@tag="$marcArray"]/subfield[@code="a"]') = '$term' 
+                    ExtractValue(`biblioitems`.`marcxml`,'//datafield[@tag="$marcArray"]/subfield[@code="a"]') LIKE '%$term%' 
 EOT;
             } else {
                 $query .= <<<EOT
-                    ExtractValue(`biblioitems`.`marcxml`,'//datafield[@tag="$marcArray"]/subfield[@code="a"]') = '$term' OR 
+                    ExtractValue(`biblioitems`.`marcxml`,'//datafield[@tag="$marcArray"]/subfield[@code="a"]') LIKE '%$term%' OR 
 EOT;
             }
         }
@@ -121,9 +121,9 @@ EOT;
 }
 
 $query .= <<<EOT
- ) AND DATE(`items`.`dateaccessioned`) BETWEEN '$from' AND '$to' 
+ ) AND DATE(`biblio`.`datecreated`) BETWEEN '$from' AND '$to' 
 AND `items`.`itype` IN ($types) 
-AND `items`.`homebranch` IN ($branches)
+AND `items`.`homebranch` IN ($branches) 
 GROUP BY `biblio`.`title`
 EOT;
 			
@@ -134,8 +134,8 @@ EOT;
 		$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 		
 	} catch(PDOException $ex) {
-		
-		error_log($ex->getMessage(), 3, "../log/error.log") or logConsole("Error: ", $ex->getMessage());
+		echo $query;
+		//error_log($ex->getMessage(), 3, "../log/error.log") or logConsole("Error: ", $ex->getMessage());
 		echo $ex->getMessage();
                 
 	}
@@ -155,10 +155,13 @@ $html = "
 <b>Žadatel</b>:            \t\t\t<b>$zadatel</b><br>\n
 <b>Zpracovatel</b>:        \t\t\t$zpracovatel<br>\n
 <b>Zpracováno</b>:         \t\t\t<b>".date("d. m. Y", strtotime(date("Y-m-d")))."</b><br>\n	
+Za období:		\t\t\t".date("d. m. Y", strtotime($from))." - ".date("d. m. Y", strtotime($to))."<br>\n
         <br>\n";
+	
+	$order = 0;
 
         foreach($results as $key => $val){
-            
+            ++$order;
             $val['title'] = str_replace("--", "", $val['title']);
             $val['title'] = str_replace("=", "", $val['title']);
             $val['title'] = str_replace("/", "", $val['title']);
@@ -206,7 +209,10 @@ $html = "
             
             $availability = trim($val['availability']);
             
-        $html .= "".$val['title']." ".$val['subtitle']."$authorPart"."<br>\n";
+        $html .= "[".$order."] <b>".$val['title']." ".$val['subtitle']."</b><br>\n";
+	if ($authorPart)
+	    $html .= "Autor:". $authorPart."<br>\n";
+
         if (! empty($lang))
             $html .= "Jazyk: $lang<br>\n";
         if ($isbn)
@@ -236,14 +242,16 @@ $html = "
             $html .= "Dostupnost: $availability<br>\n";
         if ($signature)
             $html .= "$signature<br>\n";
-        
+	if(isset($val['biblionumber']) && $val['biblionumber'] != '')
+	    $html .= "ID: <a href='".$root."/../cgi-bin/koha/catalogue/detail.pl?biblionumber=".$val['biblionumber']."'>".$val['biblionumber']."</a><br>\n";
         $html .= "<br>\n"; 
         }
 
         echo $html;  
         
-        //echo $query;
+    //    echo $query;
 /*
        file_put_contents('output.txt', "\xEF\xBB\xBF".$html);
        
        header("Location: output.txt");*/
+

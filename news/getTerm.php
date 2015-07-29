@@ -32,14 +32,26 @@
         $termList = array();
         try {
             $query = <<<EOT
-SELECT COALESCE(ExtractValue(`auth_header`.`marcxml`,'//datafield[@tag="150"]/subfield[@code="a"]'), COALESCE(ExtractValue(`auth_header`.`marcxml`,'//datafield[@tag="550"]/subfield[@code="a"]'), '')) AS `term` 
-FROM `auth_header` 
-WHERE `authtypecode` = :authtypecode AND (ExtractValue(`auth_header`.`marcxml`,'//datafield[@tag="150"]/subfield[@code="a"]') LIKE :q OR ExtractValue(`auth_header`.`marcxml`,'//datafield[@tag="550"]/subfield[@code="a"]') LIKE :q) 
-                    LIMIT 30 
+(
+SELECT ExtractValue(`auth_header`.`marcxml`,'//datafield[@tag="150"]/subfield[@code="a"]') AS `term` FROM `auth_header`
+            WHERE `authtypecode` = 'TOPIC_TERM' 
+	AND ExtractValue(`auth_header`.`marcxml`,'//datafield[@tag="150"]/subfield[@code="a"]') LIKE :q
+     ORDER BY ExtractValue(`auth_header`.`marcxml`,'//datafield[@tag="150"]/subfield[@code="a"]') = :original_q DESC, ExtractValue(`auth_header`.`marcxml`,'//datafield[@tag="150"]/subfield[@code="a"]') LIKE :q DESC
+     LIMIT 20
+)
+UNION
+(
+SELECT ExtractValue(`auth_header`.`marcxml`,'//datafield[@tag="550"]/subfield[@code="a"]') AS `term` FROM `auth_header`
+    WHERE `authtypecode` = 'TOPIC_TERM' 
+	AND ExtractValue(`auth_header`.`marcxml`,'//datafield[@tag="550"]/subfield[@code="a"]') LIKE :q 
+    ORDER BY ExtractValue(`auth_header`.`marcxml`,'//datafield[@tag="550"]/subfield[@code="a"]') = :original_q DESC, ExtractValue(`auth_header`.`marcxml`,'//datafield[@tag="550"]/subfield[@code="a"]') LIKE :q DESC
+    LIMIT 10
+)
 EOT;
 
             $stmt = $db->prepare($query);
             $stmt->bindValue(':authtypecode', 'TOPIC_TERM', PDO::PARAM_STR);
+	    $stmt->bindValue(':original_q', $_GET["q"], PDO::PARAM_STR);
             $stmt->bindValue(':q', '%'.$_GET["q"].'%', PDO::PARAM_STR);
             
             $stmt->execute();
@@ -47,10 +59,7 @@ EOT;
             $array = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         } catch(PDOException $ex) {
-
-            Debugger::Log($ex->getMessage());
-            varDump($ex->getMessage());
-
+            echo $ex->getMessage();
         }
         
         if (in_array(strtoupper($_GET['q']), array('A', 'AN', 'AND')))
@@ -67,6 +76,6 @@ EOT;
             array_push($termList, array('id' => $value['term'], 'name' => $value['term']));
         }
         
+    	
         
-        
-        echo json_encode($termList, JSON_UNESCAPED_UNICODE);
+        echo json_encode($termList, JSON_UNESCAPED_UNICODE);	
