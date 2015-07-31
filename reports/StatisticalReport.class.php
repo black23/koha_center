@@ -925,7 +925,11 @@ class StatisticalReport implements StatisticalReportInterface
     public function getArray0302()
     {
         
-        $ccodes = $this->ccodes["array"]["educationalLiteratureForAdults"];
+        $ccodes = array_merge(
+            		$this->ccodes["array"]["educationalLiteratureForAdults"],
+            		$this->ccodes["array"]["educationalLiteratureForChildren"]
+            );
+        $type = $this->docTypes["books"];
         
         try{
                 
@@ -933,8 +937,12 @@ class StatisticalReport implements StatisticalReportInterface
                     ."FROM `statistics` `s` "
 		    ."LEFT JOIN `items` `i` "
 		    ."ON `s`.`itemnumber` = `i`.`itemnumber` "
+		    ."LEFT JOIN `borrowers` `b` "
+		    ."ON `s`.`borrowernumber` = `b`.`borrowernumber` "
                     ."WHERE `s`.`datetime` BETWEEN :from AND :to "
                     ."  AND `s`.`type` IN ('issue','renew') "
+                    ."  AND `i`.`itype` IN ('".implode('\',\'', $type)."') "
+                    ."  AND `b`.`dateofbirth` > DATE_SUB(`s`.`datetime`,INTERVAL 15 YEAR) "
 		    ."  AND `i`.`ccode` IN ('".implode('\',\'', $ccodes)."')";
 
             $stmt = $this->db->prepare($query);
@@ -962,7 +970,11 @@ class StatisticalReport implements StatisticalReportInterface
     public function getArray0303()
     {
         
-        $ccodes = $this->ccodes["array"]["niceLiteratureForAdults"];
+        $ccodes = array_merge(
+    			$this->ccodes["array"]["niceLiteratureForAdults"],
+    			$this->ccodes["array"]["niceLiteratureForChildren"]
+    	);
+        $type = $this->docTypes["books"];
         
         try{
                 
@@ -970,8 +982,12 @@ class StatisticalReport implements StatisticalReportInterface
                     ."FROM `statistics` `s` "
 		    ."LEFT JOIN `items` `i` "
 		    ."ON `s`.`itemnumber` = `i`.`itemnumber` "
+		    ."LEFT JOIN `borrowers` `b` "
+		    ."ON `s`.`borrowernumber` = `b`.`borrowernumber` "
                     ."WHERE `s`.`datetime` BETWEEN :from AND :to "
                     ."  AND `s`.`type` IN ('issue','renew') "
+                    ."  AND `i`.`itype` IN ('".implode('\',\'', $type)."') "
+                    ."  AND `b`.`dateofbirth` > DATE_SUB(`s`.`datetime`,INTERVAL 15 YEAR) "
 		    ."  AND `i`.`ccode` IN ('".implode('\',\'', $ccodes)."')";
 
             $stmt = $this->db->prepare($query);
@@ -998,8 +1014,11 @@ class StatisticalReport implements StatisticalReportInterface
       */
     public function getArray0304()
     {
-        
-        $ccodes = $this->ccodes["array"]["educationalLiteratureForChildren"];
+    	$ccodes = array_merge(
+    			$this->ccodes["array"]["educationalLiteratureForAdults"],
+    			$this->ccodes["array"]["educationalLiteratureForChildren"]
+    	);
+        $type = $this->docTypes["books"];
         
         try{
                 
@@ -1007,8 +1026,12 @@ class StatisticalReport implements StatisticalReportInterface
                     ."FROM `statistics` `s` "
 		    ."LEFT JOIN `items` `i` "
 		    ."ON `s`.`itemnumber` = `i`.`itemnumber` "
+		    ."LEFT JOIN `borrowers` `b` "
+		    ."ON `s`.`borrowernumber` = `b`.`borrowernumber` "
                     ."WHERE `s`.`datetime` BETWEEN :from AND :to "
                     ."  AND `s`.`type` IN ('issue','renew') "
+                    ."  AND `i`.`itype` IN ('".implode('\',\'', $type)."') "
+                    ."  AND `b`.`dateofbirth` > DATE_SUB(`s`.`datetime`,INTERVAL 15 YEAR) "
 		    ."  AND `i`.`ccode` IN ('".implode('\',\'', $ccodes)."')";
 
             $stmt = $this->db->prepare($query);
@@ -1036,7 +1059,11 @@ class StatisticalReport implements StatisticalReportInterface
     public function getArray0305()
     {
         
-        $ccodes = $this->ccodes["array"]["niceLiteratureForChildren"];
+        $ccodes = array_merge(
+				$this->ccodes["array"]["niceLiteratureForAdults"],
+				$this->ccodes["array"]["niceLiteratureForChildren"]
+			);
+        $type = $this->docTypes["books"];
         
         try{
                 
@@ -1044,8 +1071,12 @@ class StatisticalReport implements StatisticalReportInterface
                     ."FROM `statistics` `s` "
 		    ."LEFT JOIN `items` `i` "
 		    ."ON `s`.`itemnumber` = `i`.`itemnumber` "
+		    ."LEFT JOIN `borrowers` `b` "
+		    ."ON `s`.`borrowernumber` = `b`.`borrowernumber` "
                     ."WHERE `s`.`datetime` BETWEEN :from AND :to "
                     ."  AND `s`.`type` IN ('issue','renew') "
+                    ."  AND `i`.`itype` IN ('".implode('\',\'', $type)."') "
+                    ."  AND `b`.`dateofbirth` > DATE_SUB(`s`.`datetime`,INTERVAL 15 YEAR) "
 		    ."  AND `i`.`ccode` IN ('".implode('\',\'', $ccodes)."')";
 
             $stmt = $this->db->prepare($query);

@@ -748,8 +748,6 @@ class KrizovatkaDenik extends StatisticalReport
         
         ksort($data);
         
-        /**/
-        
         $this->sheet1($data);
         $this->sheet2($data);
         $this->sheet3($data);
@@ -928,15 +926,23 @@ class KrizovatkaDenik extends StatisticalReport
     {
         try {
             
-            $ccodes = $this->ccodes["array"]["educationalLiteratureForAdults"];
+            $ccodes = array_merge(
+            		$this->ccodes["array"]["educationalLiteratureForAdults"],
+            		$this->ccodes["array"]["educationalLiteratureForChildren"]
+            );
+            $type = $this->docTypes["books"];
 
             $query = "SELECT count(`s`.`datetime`) AS 'count', DATE(`s`.`datetime`) AS `date` "
                     ."FROM `statistics` `s` "
 		    ."LEFT JOIN `items` `i` "
 		    ."ON `s`.`itemnumber` = `i`.`itemnumber` "
+		    ."LEFT JOIN `borrowers` `b` "
+		    ."ON `s`.`borrowernumber` = `b`.`borrowernumber` "
                     ."WHERE `s`.`datetime` BETWEEN :from AND :to "
                     ."  AND `s`.`type` IN ('issue','renew') "
 		    ."  AND `i`.`ccode` IN ('".implode('\',\'', $ccodes)."') "
+		    ."  AND `i`.`itype` IN ('".implode('\',\'', $type)."') "
+		    ."  AND `b`.`dateofbirth` > DATE_SUB(`s`.`datetime`,INTERVAL 15 YEAR) "
                     ."GROUP BY DATE(`s`.`datetime`)";
 
             $stmt = $this->db->prepare($query);
@@ -960,15 +966,23 @@ class KrizovatkaDenik extends StatisticalReport
     {
         try {
             
-            $ccodes = $this->ccodes["array"]["niceLiteratureForAdults"];
+            $ccodes = array_merge(
+				$this->ccodes["array"]["niceLiteratureForAdults"],
+				$this->ccodes["array"]["niceLiteratureForChildren"]
+			);
+            $type = $this->docTypes["books"];
 
             $query = "SELECT count(`s`.`datetime`) AS 'count', DATE(`s`.`datetime`) AS `date` "
                     ."FROM `statistics` `s` "
 		    ."LEFT JOIN `items` `i` "
 		    ."ON `s`.`itemnumber` = `i`.`itemnumber` "
+		    ."LEFT JOIN `borrowers` `b` "
+		    ."ON `s`.`borrowernumber` = `b`.`borrowernumber` "
                     ."WHERE `s`.`datetime` BETWEEN :from AND :to "
                     ."  AND `s`.`type` IN ('issue','renew') "
 		    ."  AND `i`.`ccode` IN ('".implode('\',\'', $ccodes)."') "
+		    ."  AND `i`.`itype` IN ('".implode('\',\'', $type)."') "
+		    ."  AND `b`.`dateofbirth` > DATE_SUB(`s`.`datetime`,INTERVAL 15 YEAR) "
                     ."GROUP BY DATE(`s`.`datetime`)";
 
             $stmt = $this->db->prepare($query);
@@ -992,15 +1006,23 @@ class KrizovatkaDenik extends StatisticalReport
     {
         try {
             
-            $ccodes = $this->ccodes["array"]["educationalLiteratureForChildren"];
+            $ccodes = array_merge(
+            		$this->ccodes["array"]["educationalLiteratureForAdults"],
+            		$this->ccodes["array"]["educationalLiteratureForChildren"]
+            );
+            $type = $this->docTypes["books"];
 
             $query = "SELECT count(`s`.`datetime`) AS 'count', DATE(`s`.`datetime`) AS `date` "
                     ."FROM `statistics` `s` "
 		    ."LEFT JOIN `items` `i` "
 		    ."ON `s`.`itemnumber` = `i`.`itemnumber` "
+		    ."LEFT JOIN `borrowers` `b` "
+		    ."ON `s`.`borrowernumber` = `b`.`borrowernumber` "
                     ."WHERE `s`.`datetime` BETWEEN :from AND :to "
                     ."  AND `s`.`type` IN ('issue','renew') "
 		    ."  AND `i`.`ccode` IN ('".implode('\',\'', $ccodes)."') "
+		    ."  AND `i`.`itype` IN ('".implode('\',\'', $type)."') "
+		    ."  AND `b`.`dateofbirth` > DATE_SUB(`s`.`datetime`,INTERVAL 15 YEAR) "
                     ."GROUP BY DATE(`s`.`datetime`)";
 
             $stmt = $this->db->prepare($query);
@@ -1024,15 +1046,23 @@ class KrizovatkaDenik extends StatisticalReport
     {
         try {
             
-            $ccodes = $this->ccodes["array"]["niceLiteratureForChildren"];
+            $ccodes = array_merge(
+				$this->ccodes["array"]["niceLiteratureForAdults"],
+				$this->ccodes["array"]["niceLiteratureForChildren"]
+			);
+            $type = $this->docTypes["books"];
 
             $query = "SELECT count(`s`.`datetime`) AS 'count', DATE(`s`.`datetime`) AS `date` "
                     ."FROM `statistics` `s` "
 		    ."LEFT JOIN `items` `i` "
 		    ."ON `s`.`itemnumber` = `i`.`itemnumber` "
+		    ."LEFT JOIN `borrowers` `b` "
+		    ."ON `s`.`borrowernumber` = `b`.`borrowernumber` "
                     ."WHERE `s`.`datetime` BETWEEN :from AND :to "
                     ."  AND `s`.`type` IN ('issue','renew') "
 		    ."  AND `i`.`ccode` IN ('".implode('\',\'', $ccodes)."') "
+		    ."  AND `i`.`itype` IN ('".implode('\',\'', $type)."') "
+		    ."  AND `b`.`dateofbirth` > DATE_SUB(`s`.`datetime`,INTERVAL 15 YEAR) "
                     ."GROUP BY DATE(`s`.`datetime`)";
 
             $stmt = $this->db->prepare($query);
