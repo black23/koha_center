@@ -242,6 +242,7 @@
             $( "#from" ).datepicker({
      // defaultDate: "-1w",
       changeMonth: true,
+      changeYear: true,
       onClose: function( selectedDate ) {
         $( "#to" ).datepicker( "option", "minDate", selectedDate );
       }
@@ -249,6 +250,7 @@
     $( "#to" ).datepicker({
       //defaultDate: "+1w",
       changeMonth: true,
+      changeYear: true,
       onClose: function( selectedDate ) {
         $( "#from" ).datepicker( "option", "maxDate", selectedDate );
       }
@@ -258,45 +260,45 @@
     $( "#from" ).datepicker('setDate', "<?php echo $defaultFrom; ?>");
     $( "#to" ).datepicker('setDate', "<?php echo $defaultTo; ?>");
             
-            $(".generatePDF").on("click", function(event){
-                
-                event.preventDefault();
-                
-                var from = $("#from").val();
-                var to = $("#to").val();
-                
-                var ariNumber = $("#ariNumber").val();
-                var zadatel = $("#zadatel").val();
-                var zpracovatel = $("#zpracovatel").val();
-                
-                var branches = "";
-                $(".branches option:checked").each(function(){
-                    branches += ","+"'"+$(this).val()+"'";
-                });
-                branches = branches.substring(1);
-                
-                var types = "";
-                $(".types option:checked").each(function(){
-                    types += ","+"'"+$(this).val()+"'";
-                });
-                types = types.substring(1);
-                
-                var marcArrays = "";
-                $(".marc-arrays option:checked").each(function(){
-                    marcArrays += ","+"'"+$(this).val()+"'";
-                });
-                marcArrays = marcArrays.substring(1);
-                
-                if( (branches.length < 1) || (types.length < 1) ){
-                    alert("Enter branches and types");
-                }
-                else{
-                    var terms = $("#term").val();
-                    console.log("Sending from: "+from+", to: "+to+", branches="+branches+"types: "+types+"&ariNumber="+ariNumber+"&zadatel="+zadatel+"&zpracovatel="+zpracovatel+"&marcArrays="+marcArrays+"&terms="+terms);
-                    window.open('generateARIOutput.ajax.php?from='+from+'&to='+to+"&branches="+branches+"&types="+types+"&ariNumber="+ariNumber+"&zadatel="+zadatel+"&zpracovatel="+zpracovatel+"&marcArrays="+marcArrays+"&terms="+terms);
-                }
-                    
-            });
+    $(".generatePDF").on("click", function(event){
+        
+        event.preventDefault();
+        
+        var from = $("#from").val();
+        var to = $("#to").val();
+        
+        var ariNumber = $("#ariNumber").val();
+        var zadatel = $("#zadatel").val();
+        var zpracovatel = $("#zpracovatel").val();
+        
+        var branches = "";
+        $(".branches option:checked").each(function(){
+            branches += ","+"'"+$(this).val()+"'";
+        });
+        branches = branches.substring(1);
+        
+        var types = "";
+        $(".types option:checked").each(function(){
+            types += ","+"'"+$(this).val()+"'";
+        });
+        types = types.substring(1);
+        
+        var marcArrays = "";
+        $(".marc-arrays option:checked").each(function(){
+            marcArrays += ","+"'"+$(this).val()+"'";
+        });
+        marcArrays = marcArrays.substring(1);
+        
+        if( (branches.length < 1) || (types.length < 1) ){
+            alert("Enter branches and types");
+        }
+        else{
+            var terms = $("#term").val();
+            console.log("Sending from: "+from+", to: "+to+", branches="+branches+"types: "+types+"&ariNumber="+ariNumber+"&zadatel="+zadatel+"&zpracovatel="+zpracovatel+"&marcArrays="+marcArrays+"&terms="+terms);
+            window.open('generateARIOutput.ajax.php?from='+from+'&to='+to+"&branches="+branches+"&types="+types+"&ariNumber="+ariNumber+"&zadatel="+zadatel+"&zpracovatel="+zpracovatel+"&marcArrays="+marcArrays+"&terms="+terms);
+        }
+            
+    });
                 
         });
         
